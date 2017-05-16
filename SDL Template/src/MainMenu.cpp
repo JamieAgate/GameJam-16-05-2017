@@ -1,7 +1,7 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu(SDL_Renderer* renderer, InputManager* _input, GameStateManager* manager):
-	GameState(renderer,_input)
+MainMenu::MainMenu(SDL_Renderer* renderer, InputManager* _input, GameStateManager* manager) :
+	GameState(manager, renderer)
 {
 	initSuccess = false;
 	timer = 0;
