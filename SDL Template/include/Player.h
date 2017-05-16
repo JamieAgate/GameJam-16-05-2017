@@ -12,11 +12,11 @@ public:
 	void Update();
 	void Draw();
 
-	void LoadMapData(std::vector<int> _mapData) { mapData = _mapData; }
+	void LoadMapData(std::vector<Uint8> _mapData) { mapData = _mapData; }
 private:
 	SDL_Renderer* renderer;
-	InputManager* input = NULL;
-	std::vector<int> mapData;
+	InputManager* input;
+	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
 
 

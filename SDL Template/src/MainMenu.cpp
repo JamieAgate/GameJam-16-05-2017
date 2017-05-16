@@ -70,6 +70,7 @@ void MainMenu::Update()
 	if (jumpToGameLoop)
 	{
 		std::cout << "Will Jump to game Loop\n";
+		GS_Manager->ChangeState(new InGame(renderer, GS_Manager, input));
 	}
 }
 
@@ -147,4 +148,9 @@ void MainMenu::Idle()
 	loadGameButton->Draw(650, 350);
 	optionsButton->Draw(200, 450);
 	exitButton->Draw(650, 450);
+}
+
+void MainMenu::Draw()
+{
+
 }

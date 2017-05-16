@@ -25,7 +25,7 @@ void CollisionMap::LoadMap(char* _filePath, int _w, int _h)
 
 	std::cout << error << "\n";
 
-	int pixel = 0;
+	Uint8 pixel = 0;
 	// store each red pixel data in a Int vector
 	for (int i = 0; i < w * h; i++) { 
 		pixel = (int)imageData[(i * 4)];

@@ -2,8 +2,10 @@
 
 Player::Player(InputManager* _input, SDL_Renderer* _renderer)
 {
-	input = _input;
+	this->input = _input;
 	renderer = _renderer;
+
+	InitPlayer();
 
 	moveX = playerSprite->GetX();
 	moveY = playerSprite->GetY();
@@ -32,6 +34,11 @@ void Player::Update()
 {
 	UpdateXMovement();
 	UpdateYMovement();
+}
+
+void Player::Draw()
+{
+	playerSprite->Draw();
 }
 
 void Player::UpdateXMovement()

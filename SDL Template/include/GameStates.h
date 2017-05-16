@@ -1,10 +1,7 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <string>
-#include <iostream>
-
 #ifndef GAMESTATE
 #define GAMESTATE
+
+#include "SDLInit.h"
 
 class GameStateManager;
 

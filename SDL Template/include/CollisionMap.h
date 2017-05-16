@@ -10,9 +10,9 @@ public:
 	~CollisionMap();
 
 	void LoadMap(char* _filePath, int _w, int _h);
-	std::vector<int> GetMapData() { return mapData; }
+	std::vector<Uint8> GetMapData() { return mapData; }
 
 private:
 
-	std::vector<int> mapData;
+	std::vector<Uint8> mapData;
 };

@@ -12,7 +12,7 @@ public:
 	void RemoveLastState(); //removes last state from the vector
 
 	void UpdateState(); //updates most recent Game State on the vector
-	void DrawState(); //draws the most recent Game State on the vector
+	void DrawStates(); //draws the most recent Game State on the vector
 
 	bool CheckStateExit() { return gameStatesVector.back()->CheckExit(); }
 private:

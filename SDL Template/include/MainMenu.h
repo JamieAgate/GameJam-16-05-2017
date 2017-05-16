@@ -3,6 +3,7 @@
 #include "GameStates.h"
 #include "GSManager.h"
 #include "InputManager.h"
+#include "InGame.h"
 
 class MainMenu : public GameState
 {
@@ -13,6 +14,8 @@ public:
 	bool InitMenu();
 
 	void Update() override;
+	void Draw() override;
+
 private:
 	bool initSuccess;
 	int timer;
