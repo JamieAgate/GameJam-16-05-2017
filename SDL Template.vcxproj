@@ -164,6 +164,7 @@
     <ClCompile Include="SDL Template\src\GameServer.cpp" />
     <ClCompile Include="SDL Template\src\GameStates.cpp" />
     <ClCompile Include="SDL Template\src\GSManager.cpp" />
+    <ClCompile Include="SDL Template\src\InGame.cpp" />
     <ClCompile Include="SDL Template\src\InputManager.cpp" />
     <ClCompile Include="SDL Template\src\Main.cpp" />
     <ClCompile Include="SDL Template\src\MainMenu.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="SDL Template\include\GameServer.h" />
     <ClInclude Include="SDL Template\include\GameStates.h" />
     <ClInclude Include="SDL Template\include\GSManager.h" />
+    <ClInclude Include="SDL Template\include\InGame.h" />
     <ClInclude Include="SDL Template\include\InputManager.h" />
     <ClInclude Include="SDL Template\include\MainMenu.h" />
     <ClInclude Include="SDL Template\include\SDLInit.h" />
