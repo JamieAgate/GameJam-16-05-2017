@@ -10,6 +10,7 @@
 #include <chrono>
 #include "GameServer.h"
 #include "InputManager.h"
+#include "Player.h"
 
 #define WINDOWHEIGHT 1280 //Configure values for screen size here
 #define WINDOWWIDTH 720

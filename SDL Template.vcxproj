@@ -168,6 +168,7 @@
     <ClCompile Include="SDL Template\src\InputManager.cpp" />
     <ClCompile Include="SDL Template\src\Main.cpp" />
     <ClCompile Include="SDL Template\src\MainMenu.cpp" />
+    <ClCompile Include="SDL Template\src\Player.cpp" />
     <ClCompile Include="SDL Template\src\SDLInit.cpp" />
     <ClCompile Include="SDL Template\src\SoundManager.cpp" />
     <ClCompile Include="SDL Template\src\Sprite.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="SDL Template\include\InGame.h" />
     <ClInclude Include="SDL Template\include\InputManager.h" />
     <ClInclude Include="SDL Template\include\MainMenu.h" />
+    <ClInclude Include="SDL Template\include\Player.h" />
     <ClInclude Include="SDL Template\include\SDLInit.h" />
     <ClInclude Include="SDL Template\include\SoundManager.h" />
     <ClInclude Include="SDL Template\include\Sprite.h" />

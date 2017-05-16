@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Network Classes">
       <UniqueIdentifier>{b5def02a-0e8c-48f4-824d-9feb092e3010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game Objects">
+      <UniqueIdentifier>{71833d7e-00b0-4366-a463-2ca79df6ceaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game Objects">
+      <UniqueIdentifier>{2eac9b8a-f0e5-4c13-a66b-b07668b1479a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SDL Template\src\Main.cpp">
@@ -84,6 +90,12 @@
     <ClCompile Include="SDL Template\src\InGame.cpp">
       <Filter>Source Files\Game States</Filter>
     </ClCompile>
+    <ClCompile Include="SDL Template\src\GameServer.cpp">
+      <Filter>Source Files\Network Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL Template\src\Player.cpp">
+      <Filter>Source Files\Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDL Template\include\SDLInit.h">
@@ -121,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="SDL Template\include\UDPConnection.h">
       <Filter>Header Files\Network Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL Template\include\MainMenu.h">
+      <Filter>Header Files\Game States</Filter>
     </ClInclude>
     <ClInclude Include="SDL Template\include\GameServer.h">
       <Filter>Header Files\Network Classes</Filter>

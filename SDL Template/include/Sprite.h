@@ -23,6 +23,10 @@ public:
 	int GetW() { return posRect.w; }
 	int GetH() { return posRect.h; }
 
+	void SetX(int _x) { posRect.x = _x; }
+	void SetY(int _y) { posRect.y = _y; }
+	void SetW(int _w) { posRect.w = _w; }
+	void SetH(int _h) { posRect.h = _h; }
 protected:
 	SDL_Renderer* renderer;
 	SDL_Texture* tex;
