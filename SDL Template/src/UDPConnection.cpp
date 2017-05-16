@@ -24,6 +24,7 @@ bool UDPConnection::Init()
 
 	packet->address.host = remoteIP.host;
 	packet->address.port = remoteIP.port;
+
 	return true;
 }
 
