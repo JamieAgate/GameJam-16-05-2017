@@ -6,6 +6,7 @@
 #include "MainMenu.h"
 #include "InputManager.h"
 #include <chrono>
+#include "Player.h"
 
 #define WINDOWHEIGHT 1280 //Configure values for screen size here
 #define WINDOWWIDTH 720
