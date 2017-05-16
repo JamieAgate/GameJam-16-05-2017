@@ -2,13 +2,19 @@
 #include <windows.h>
 #include "SDLInit.h"
 #include "CollisionMap.h"
+#include "InputManager.h"
+#include "GameStates.h"
+#include "GSManager.h"
+#include "MainMenu.h"
+#include "InputManager.h"
+#include <chrono>
 #include "GameServer.h"
 #include "InputManager.h"
 
 #define WINDOWHEIGHT 1280 //Configure values for screen size here
 #define WINDOWWIDTH 720
 
-void GameLoop();
+void GameLoop(SDL_Renderer* renderer);
 void ServerLoop();
 
 int main(int arc, char* args[])
@@ -32,12 +38,16 @@ int main(int arc, char* args[])
 	}
 
 	if (choice == '1') {
-		if (!SetupRenderer(window, renderer, WINDOWHEIGHT, WINDOWWIDTH)) {
+		/*if (!SetupRenderer(window, renderer, WINDOWHEIGHT, WINDOWWIDTH)) {
 			CloseSDL(window, renderer);
 			return -3;
-		}
+		}*/
 
-		GameLoop();
+		window = SDL_CreateWindow("Holiday Hell", 20, 12, WINDOWHEIGHT, WINDOWWIDTH, SDL_WINDOW_SHOWN);
+		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+		GameLoop(renderer);
+		CloseSDL(window, renderer);
 	}
 	else {
 		ServerLoop();
@@ -49,9 +59,27 @@ int main(int arc, char* args[])
 }
 
 //Game Loop
-void GameLoop()
+void GameLoop(SDL_Renderer* renderer)
 {
+	GameStateManager* gsManager = new GameStateManager();
+	InputManager* input = new InputManager;
 
+	gsManager->AddState(new MainMenu(renderer, input, gsManager));
+
+	while (!input->WasKeyPressed(SDL_SCANCODE_ESCAPE) && !gsManager->CheckStateExit())
+	{
+		SDL_PumpEvents();
+
+		SDL_RenderClear(renderer);
+
+		input->UpdateKeyboard();
+		gsManager->UpdateState();
+		gsManager->DrawState();
+
+		SDL_RenderPresent(renderer);
+	}
+	delete gsManager;
+	delete input;
 }
 
 //Server Loop

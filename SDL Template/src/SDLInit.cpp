@@ -36,7 +36,7 @@ bool InitExtensions()
 
 bool SetupRenderer(SDL_Window* _window, SDL_Renderer* _renderer, int _width, int _height)
 {
-	_window = SDL_CreateWindow("Holiday Hell", 10, 10, _width, _height, SDL_WINDOW_SHOWN);
+	_window = SDL_CreateWindow("Holiday Hell", 20, 12, _width, _height, SDL_WINDOW_SHOWN);
 
 	if (_window == NULL) {
 		std::cout << "Window failed to start: " << SDL_GetError() << "\n";

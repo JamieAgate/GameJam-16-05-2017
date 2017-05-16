@@ -75,6 +75,9 @@
     <ClCompile Include="SDL Template\src\UDPConnection.cpp">
       <Filter>Source Files\Network Classes</Filter>
     </ClCompile>
+    <ClCompile Include="SDL Template\src\MainMenu.cpp">
+      <Filter>Source Files\Game States</Filter>
+    </ClCompile>
     <ClCompile Include="SDL Template\src\GameServer.cpp">
       <Filter>Source Files\Network Classes</Filter>
     </ClCompile>
@@ -114,9 +117,6 @@
       <Filter>Header Files\Network Classes</Filter>
     </ClInclude>
     <ClInclude Include="SDL Template\include\UDPConnection.h">
-      <Filter>Header Files\Network Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SDL Template\include\GameServer.h">
       <Filter>Header Files\Network Classes</Filter>
     </ClInclude>
   </ItemGroup>
