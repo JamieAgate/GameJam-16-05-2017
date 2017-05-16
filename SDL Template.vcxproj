@@ -161,6 +161,7 @@
     <ClCompile Include="Externals\LodePNG.cpp" />
     <ClCompile Include="SDL Template\src\AnimSprite.cpp" />
     <ClCompile Include="SDL Template\src\CollisionMap.cpp" />
+    <ClCompile Include="SDL Template\src\GameServer.cpp" />
     <ClCompile Include="SDL Template\src\GameStates.cpp" />
     <ClCompile Include="SDL Template\src\GSManager.cpp" />
     <ClCompile Include="SDL Template\src\InputManager.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Externals\LodePNG.h" />
     <ClInclude Include="SDL Template\include\AnimSprite.h" />
     <ClInclude Include="SDL Template\include\CollisionMap.h" />
+    <ClInclude Include="SDL Template\include\GameServer.h" />
     <ClInclude Include="SDL Template\include\GameStates.h" />
     <ClInclude Include="SDL Template\include\GSManager.h" />
     <ClInclude Include="SDL Template\include\InputManager.h" />
