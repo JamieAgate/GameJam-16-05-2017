@@ -57,7 +57,7 @@ bool MainMenu::InitMenu()
 
 void MainMenu::Update()
 {
-	if (timer < 91)
+	if (timer < 150)
 	{
 		timer++;
 		Intro();
@@ -76,20 +76,20 @@ void MainMenu::Update()
 void MainMenu::Intro()
 {
 		if (timer < 60) { //TITLE APPEARS!
-			title1->Draw(1280 - ((timer - 300) * 15), 20);
+			title1->Draw(1280 - ((timer) * 15), 20);
 		}
-		else if (timer < 90) {
+		else if (timer < 120) {
 			title1->Draw(380, 20);
-			title2->Draw(1280 - ((timer - 360) * 16), 180);
+			title2->Draw(1280 - ((timer-60) * 16), 180);
 		}
-		else if (timer < 120) { //Buttons appear on screen
-			newGameButton->Draw(200, 720 - ((timer - 420) * (370 / 30)));
-			loadGameButton->Draw(650, 720 - ((timer - 420) * (370 / 30)));
-			optionsButton->Draw(200, 720 - ((timer - 420) * (270 / 30)));
-			exitButton->Draw(650, 720 - ((timer - 420) * (270 / 30)));
+		else if (timer < 150) { //Buttons appear on screen
+			newGameButton->Draw(200, 720 - ((timer - 120) * (370 / 30)));
+			loadGameButton->Draw(650, 720 - ((timer - 120) * (370 / 30)));
+			optionsButton->Draw(200, 720 - ((timer - 120) * (270 / 30)));
+			exitButton->Draw(650, 720 - ((timer - 120) * (270 / 30)));
 		}
 
-		if (timer >= 90) {
+		if (timer >= 120) {
 			title1->Draw(380, 20);
 			title2->Draw(320, 180);
 		}
