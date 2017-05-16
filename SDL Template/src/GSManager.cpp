@@ -33,7 +33,7 @@ void GameStateManager::UpdateState()
 	gameStatesVector.back()->Update(); //updates current game state
 }
 
-void GameStateManager::DrawState()
+void GameStateManager::DrawStates()
 {
 	for (unsigned int i = 0; i < gameStatesVector.size(); i++) { //draws all states in the vector
 		gameStatesVector.at(i)->Draw();

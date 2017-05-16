@@ -148,3 +148,8 @@ void MainMenu::Idle()
 	optionsButton->Draw(200, 450);
 	exitButton->Draw(650, 450);
 }
+
+void MainMenu::Draw()
+{
+
+}

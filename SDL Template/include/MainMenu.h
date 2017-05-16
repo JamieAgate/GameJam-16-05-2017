@@ -13,6 +13,7 @@ public:
 	bool InitMenu();
 
 	void Update() override;
+	void Draw() override;
 private:
 	bool initSuccess;
 	int timer;

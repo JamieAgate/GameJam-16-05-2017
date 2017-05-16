@@ -62,8 +62,8 @@ int main(int arc, char* args[])
 //Game Loop
 void GameLoop(SDL_Renderer* renderer)
 {
+	InputManager* input = new InputManager();
 	GameStateManager* gsManager = new GameStateManager();
-	InputManager* input = new InputManager;
 
 	gsManager->AddState(new MainMenu(renderer, input, gsManager));
 
@@ -75,7 +75,7 @@ void GameLoop(SDL_Renderer* renderer)
 
 		input->UpdateKeyboard();
 		gsManager->UpdateState();
-		gsManager->DrawState();
+		gsManager->DrawStates();
 
 		SDL_RenderPresent(renderer);
 	}
