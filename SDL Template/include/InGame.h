@@ -12,7 +12,7 @@ class InGame : public GameState
 {
 public:
 	InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager* _input);
-	~InGame();
+	~InGame() override;
 
 	void Update() override;
 	void Draw() override;

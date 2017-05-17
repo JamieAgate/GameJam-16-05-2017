@@ -31,4 +31,6 @@ private:
 	SDLNet_SocketSet socketSet;
 
 	std::vector<TCPsocket> clientSockets;
+
+	bool* idList;
 };

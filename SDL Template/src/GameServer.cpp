@@ -7,10 +7,14 @@ GameServer::GameServer(int _port, int _maxClients)
 
 	maxSockets = maxClients + 1;
 	connectionCount = 0;
+
+	idList = new bool[maxSockets] { false };
+	idList[0] = true;
 }
 
 GameServer::~GameServer()
 {
+	delete idList;
 	SDLNet_FreeSocketSet(socketSet);
 	SDLNet_TCP_Close(serverSocket);
 }
@@ -56,8 +60,17 @@ void GameServer::CheckForConnectionRequests()
 			SDLNet_TCP_AddSocket(socketSet, clientSockets.back());
 
 			std::stringstream msg;
-			msg << "OK:" << ++connectionCount;
-			SendData(clientSockets.back(), msg.str());
+
+			for (int i = 0; i < maxSockets; i++) {
+
+				if (!idList[i]) {
+					msg << "OK:" << i;
+					SendData(clientSockets.back(), msg.str());
+					idList[i] = true;
+
+					break;
+				}
+			}
 
 			std::cout << "Client connected: (" << clientSockets.size() << "/" << maxClients << ")\n";
 		}
@@ -80,6 +93,7 @@ void GameServer::CheckClientSockets()
 				SDLNet_TCP_Close(clientSockets[client]);
 				clientSockets.erase(clientSockets.begin());
 				std::cout << "Server has " << clientSockets.size() << " client(s) \n";
+				idList[client + 1] = false;
 			}
 			else {
 				for (int i = 0; i < clientSockets.size(); i++) {
@@ -87,6 +101,15 @@ void GameServer::CheckClientSockets()
 					if (i != client) {
 						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
 					}
+
+					if (buffer[0] == '|') {
+						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+						std::cout << buffer << "\n";
+					}
+				}
+
+				if (buffer[0] == '|') {
+					std::cout << "Recieved a deletion request for ID number: " << buffer[1] << "\n";
 				}
 			}
 		}
