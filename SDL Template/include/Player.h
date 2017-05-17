@@ -13,6 +13,9 @@ public:
 	void Draw();
 
 	void LoadMapData(std::vector<Uint8> _mapData) { mapData = _mapData; }
+
+	void AssignID(int _playerID) { playerID = _playerID; }
+
 private:
 	SDL_Renderer* renderer;
 	InputManager* input;
@@ -38,4 +41,7 @@ private:
 
 	int col;
 	int checkPixel;
+
+	//NETWORK PARAMETERS
+	int playerID;
 };

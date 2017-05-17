@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "CollisionMap.h"
 #include "Player.h"
+#include "TCPConnection.h"
 
 class InGame : public GameState
 {
@@ -21,4 +22,6 @@ private:
 	CollisionMap* mapData;
 
 	std::vector<Player*> players;
+
+	TCPConnection* net;
 };
