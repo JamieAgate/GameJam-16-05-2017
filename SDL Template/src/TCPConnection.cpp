@@ -67,7 +67,7 @@ void TCPConnection::Send(std::string _data)
 
 	int len = strlen(buffer) + 1; //Specify length as one greater than the buffer to allow for \0 terminator
 
-	 SDLNet_TCP_Send(clientSocket, (void *)buffer, len); //Send data to server
+	 //SDLNet_TCP_Send(clientSocket, (void *)buffer, len); //Send data to server
 }
 
 std::string TCPConnection::Recv()
