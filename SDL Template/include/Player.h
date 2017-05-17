@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimSprite.h"
 #include "InputManager.h"
-#include "CollisionMap.h"
+#include <vector>
 
 class Player
 {
