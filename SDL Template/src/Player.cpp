@@ -34,6 +34,7 @@ void Player::Update()
 {
 	UpdateXMovement();
 	UpdateYMovement();
+	std::cout << playerSprite->GetX() << " , " << playerSprite->GetY() << "\n";
 }
 
 void Player::Draw()
@@ -55,7 +56,7 @@ void Player::UpdateXMovement()
 		moveX -= speed;
 	}
 	int i = 0;
-	while(i < 11)
+	while(i < 10)
 	{
 		if (dKeyPressed)
 		{
@@ -65,10 +66,11 @@ void Player::UpdateXMovement()
 		{
 			moveX += i;
 		}
-		if (CheckCollision(playerSprite->GetY(), moveX))
+		if (!CheckCollision(playerSprite->GetY(), moveX))
 		{
 			i = 11;
 		}
+		i++;
 	}
 	playerSprite->SetX(moveX);
 }
@@ -87,7 +89,7 @@ void Player::UpdateYMovement()
 		moveY += speed;
 	}
 	int i = 0;
-	while (i < 11)
+	while (i < 10)
 	{
 		if (wKeyPressed)
 		{
@@ -97,10 +99,11 @@ void Player::UpdateYMovement()
 		{
 			moveY -= i;
 		}
-		if (CheckCollision(moveY, playerSprite->GetX()))
+		if (!CheckCollision(moveY, playerSprite->GetX()))
 		{
 			i = 11;
 		}
+		i++;
 	}
 	playerSprite->SetY(moveY);
 }

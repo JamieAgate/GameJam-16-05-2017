@@ -22,5 +22,11 @@ private:
 	CollisionMap* mapData;
 	Sprite* map;
 
+	//camera
+	void UpdateCamera();
+	SDL_Rect camera{ 0,0,1280,720 };
+	SDL_Rect screen{ 0,0,1280,720 };
+	SDL_Texture* cameraRenderBuffer;
+
 	std::vector<Player*> players;
 };

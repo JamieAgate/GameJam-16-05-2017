@@ -12,6 +12,9 @@ public:
 	void Update();
 	void Draw();
 
+	int GetPlayerX() { return playerSprite->GetX(); }
+	int GetPlayerY() { return playerSprite->GetY(); }
+
 	void LoadMapData(std::vector<Uint8> _mapData) { mapData = _mapData; }
 private:
 	SDL_Renderer* renderer;
