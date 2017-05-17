@@ -5,6 +5,8 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer)
 	this->input = _input;
 	renderer = _renderer;
 
+	playerID = 0;
+
 	InitPlayer();
 
 	moveX = playerSprite->GetX();

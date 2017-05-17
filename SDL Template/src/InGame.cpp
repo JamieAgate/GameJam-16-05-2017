@@ -6,12 +6,16 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	input = NULL;
 	this->input = _input;
 	mapData = NULL;
+	net = NULL;
 
 	LoadCollisionMap("resources\\map\\map.png", 2560, 1440);
 	map = new Sprite(_renderer, "resources\\map\\map.png",0,0, 2560, 1440);
  	players.push_back(new Player(input, renderer));
 	players[0]->LoadMapData(mapData->GetMapData());
-	cameraRenderBuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1440);
+
+	net = new TCPConnection();
+
+	net->Init();
 }
 
 InGame::~InGame()
