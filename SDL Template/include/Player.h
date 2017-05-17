@@ -3,6 +3,7 @@
 #include "InputManager.h"
 #include "CollisionMap.h"
 #include <sstream>
+#include <vector>
 
 class Player
 {
