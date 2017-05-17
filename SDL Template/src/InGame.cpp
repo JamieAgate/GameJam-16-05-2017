@@ -10,13 +10,14 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 
 	LoadCollisionMap("resources\\map\\map.png", 2560, 1440);
 	map = new Sprite(_renderer, "resources\\map\\map.png",0,0, 2560, 1440);
- 	players.push_back(new Player(input, renderer));
-	players[0]->LoadMapData(mapData->GetMapData());
 	cameraRenderBuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1440);
 
 	net = new TCPConnection();
 
 	net->Init();
+
+	players.push_back(new Player(input, renderer, net->GetConnectionID(), false));
+	players[0]->LoadMapData(mapData->GetMapData());
 }
 
 InGame::~InGame()
@@ -25,6 +26,7 @@ InGame::~InGame()
 	{
 		delete players.at(i);
 	}
+
 	delete map;
 	SDL_DestroyTexture(cameraRenderBuffer);
 }
@@ -34,6 +36,9 @@ void InGame::Update()
 	players[0]->Update();
 	UpdateCamera();
 	players[0]->SetRelativeMousePos(camera.x, camera.y);
+
+	NetSend();
+	NetRecv();
 }
 
 void InGame::UpdateCamera()
@@ -57,7 +62,7 @@ void InGame::UpdateCamera()
 		camera.y = 0;
 	}
 
-	std::cout << camera.x << " , " << camera.y << "\n";
+	//std::cout << camera.x << " , " << camera.y << "\n";
 }
 
 void InGame::LoadCollisionMap(char* _filePath, int _w, int _h)
@@ -71,7 +76,64 @@ void InGame::Draw()
 	SDL_SetRenderTarget(renderer, cameraRenderBuffer);
 	SDL_RenderClear(renderer);
 	map->Draw();
-	players[0]->Draw();
+	
+	//Draw all players
+	for (Player* p : players) {
+		p->Draw();
+	}
+
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderCopy(renderer, cameraRenderBuffer, &camera, &screen);
+}
+
+void InGame::NetSend()
+{
+	std::stringstream ss;
+
+	for (Player* p : players) {
+		if (!p->IsRemotePlayer()) {
+			ss << p->CreateNetString();
+		}
+	}
+
+	std::string msg(ss.str());
+	net->Send(msg);
+}
+
+void InGame::NetRecv()
+{
+	std::string msg = net->Recv();
+
+	if (msg == "") return;
+
+	std::stringstream ss(msg);
+
+	std::string segment;
+
+	while (ss >> segment) {
+		if (segment == "[") {
+
+			int playerID, posX, posY;
+			float playerAngle;
+
+			ss >> playerID;
+			ss >> posX;
+			ss >> posY;
+			ss >> playerAngle;
+
+			Player* netPlayer = NULL;
+			for (Player* p : players) {
+				if (p->GetID() == playerID) {
+					netPlayer = p;
+				}
+			}
+
+			if (netPlayer == NULL) {
+				netPlayer = new Player(input, renderer, playerID, true);
+				players.push_back(netPlayer);
+			}
+
+			netPlayer->NetworkUpdate(posX, posY, playerAngle);
+		}
+	}
 }

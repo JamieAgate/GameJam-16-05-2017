@@ -2,11 +2,12 @@
 #include "AnimSprite.h"
 #include "InputManager.h"
 #include "CollisionMap.h"
+#include <sstream>
 
 class Player
 {
 public:
-	Player(InputManager* _input, SDL_Renderer* _renderer);
+	Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, bool _isRemote);
 	~Player();
 
 	void Update();
@@ -14,12 +15,21 @@ public:
 
 	int GetPlayerX() { return playerSprite->GetX(); }
 	int GetPlayerY() { return playerSprite->GetY(); }
+	float GetPlayerAng() { return angle; }
 
 	void LoadMapData(std::vector<Uint8> _mapData) { mapData = _mapData; }
 
 	void AssignID(int _playerID) { playerID = _playerID; }
 
 	void SetRelativeMousePos(int _x, int _y) { mouseWorldX = _x; mouseWorldY = _y; }
+
+	//Network functions
+	bool IsRemotePlayer() { return isRemote; }
+	int GetID() { return playerID; }
+	void NetworkUpdate(int _x, int _y, float _angle);
+
+	std::string CreateNetString();
+
 private:
 	SDL_Renderer* renderer;
 	InputManager* input;
@@ -52,4 +62,5 @@ private:
 
 	//NETWORK PARAMETERS
 	int playerID;
+	bool isRemote; 
 };

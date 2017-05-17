@@ -23,7 +23,7 @@ void AnimSprite::Draw()
 {
 	if (isValid) { //Check if sprite is valid before drawing
 		UpdateBlit();
-		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, angle, NULL, flip);
+		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
 	}
 }
 
@@ -34,7 +34,7 @@ void AnimSprite::Draw(int _x, int _y)
 		posRect.x = _x; //Update Position
 		posRect.y = _y;
 
-		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, angle, NULL, flip);
+		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
 	}
 }
 
@@ -46,7 +46,7 @@ void AnimSprite::Draw(int _x, int _y, SDL_RendererFlip _flip)
 		posRect.y = _y;
 		flip = _flip;
 
-		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, angle, NULL, flip);
+		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
 	}
 }
 
@@ -59,7 +59,7 @@ void AnimSprite::Draw(int _x, int _y, int _angle, SDL_RendererFlip _flip)
 		flip = _flip;
 		angle = _angle;
 
-		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, angle, NULL, flip);
+		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
 	}
 }
 

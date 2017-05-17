@@ -6,6 +6,7 @@
 #include "CollisionMap.h"
 #include "Player.h"
 #include "TCPConnection.h"
+#include <sstream>
 
 class InGame : public GameState
 {
@@ -30,6 +31,10 @@ private:
 	SDL_Texture* cameraRenderBuffer;
 
 	std::vector<Player*> players;
+
+	//Network things
+	void NetSend();
+	void NetRecv();
 
 	TCPConnection* net;
 };

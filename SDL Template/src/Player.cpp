@@ -1,11 +1,12 @@
 #include "Player.h"
 
-Player::Player(InputManager* _input, SDL_Renderer* _renderer)
+Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, bool _isRemote)
 {
 	this->input = _input;
 	renderer = _renderer;
 
-	playerID = 0;
+	playerID = _playerID;
+	isRemote = _isRemote;
 
 	InitPlayer();
 
@@ -34,9 +35,11 @@ bool Player::InitPlayer()
 
 void Player::Update()
 {
-	UpdateXMovement();
-	UpdateYMovement();
-	UpdateRotation();
+	if (!isRemote) {
+		UpdateXMovement();
+		UpdateYMovement();
+		UpdateRotation();
+	}
 }
 
 void Player::Draw()
@@ -147,4 +150,25 @@ bool Player::CheckPixelData(int _yOffset, int _xOffset)
 		}
 	}
 	return false;
+}
+
+//NETWORK FUNCTIONS
+
+std::string Player::CreateNetString()
+{
+	std::stringstream ss;
+
+	ss << "[" << " "
+		<< playerID << " "
+		<< GetPlayerX() << " " << GetPlayerY() << " " << GetPlayerAng() << " "
+		<< "]";
+
+	return ss.str();
+}
+
+void Player::NetworkUpdate(int _x, int _y, float _angle)
+{
+	playerSprite->SetX(_x);
+	playerSprite->SetY(_y);
+	angle = _angle;
 }

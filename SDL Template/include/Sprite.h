@@ -28,6 +28,8 @@ public:
 	void SetY(int _y) { posRect.y = _y; }
 	void SetW(int _w) { posRect.w = _w; }
 	void SetH(int _h) { posRect.h = _h; }
+	void SetAngle(float _angle) { angle = _angle; }
+
 protected:
 	SDL_Renderer* renderer;
 	SDL_Texture* tex;
