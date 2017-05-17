@@ -1,5 +1,6 @@
 #pragma once
 #include "SDLInit.h"
+#include "Sprite.h"
 #include <LodePNG.h>
 #include <vector>
 
@@ -13,6 +14,5 @@ public:
 	std::vector<Uint8> GetMapData() { return mapData; }
 
 private:
-
 	std::vector<Uint8> mapData;
 };

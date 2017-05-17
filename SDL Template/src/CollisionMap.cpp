@@ -20,9 +20,8 @@ void CollisionMap::LoadMap(char* _filePath, int _w, int _h)
 	unsigned char* imageData = nullptr;
 	unsigned int w = _w;
 	unsigned int h = _h;
-
+	
 	error = lodepng_decode32_file(&imageData, &w, &h, _filePath);
-
 	std::cout << error << "\n";
 
 	Uint8 pixel = 0;
