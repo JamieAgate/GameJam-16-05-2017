@@ -18,6 +18,8 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 
 	players.push_back(new Player(input, renderer, net->GetConnectionID(), false));
 	players[0]->LoadMapData(mapData->GetMapData());
+
+	networkTimer = 0;
 }
 
 InGame::~InGame()
@@ -37,6 +39,11 @@ InGame::~InGame()
 
 void InGame::Update()
 {
+	networkTimer++;
+	int dataTest = 0;
+
+	std::stringstream mainPacket;
+
 	players[0]->Update();
 	UpdateCamera();
 	players[0]->SetRelativeMousePos(camera.x, camera.y);
@@ -46,8 +53,22 @@ void InGame::Update()
 		ss << "|" << " " << players[0]->GetID() << " ]";
 		net->Send(ss.str());
 	}
-	else { NetSend(); }
+	else if (networkTimer % 2 == 0) { 
+		mainPacket << players[0]->CreateNetString();
+		dataTest++;
+	}
 
+	//Check if player wants to send bullet data to server
+	if (players[0]->SpawningBullet()) {
+		mainPacket << players[0]->CreateProjectilePacket();
+		dataTest++;
+	}
+
+	if (dataTest > 1) {
+		int BREAKHERE = 0;
+	}
+
+	net->Send(mainPacket.str());
 	NetRecv();
 }
 
@@ -121,7 +142,7 @@ void InGame::NetRecv()
 	std::string segment;
 
 	while (ss >> segment) {
-		if (segment == "[") {
+		if (segment == "[") { //Movement Data
 
 			int playerID, posX, posY;
 			float playerAngle;
@@ -145,7 +166,8 @@ void InGame::NetRecv()
 
 			netPlayer->NetworkUpdate(posX, posY, playerAngle);
 		}
-		else if (segment == "|") {
+
+		if (segment == "|") { //Deletion request
 			
 			int deleteID;
 			ss >> deleteID;
@@ -160,6 +182,17 @@ void InGame::NetRecv()
 			}
 
 			players.erase(std::remove(players.begin(), players.end(), nullptr), players.end());
+		}
+
+		if (segment == "<") { //Projectile Data
+			float pX, pY, pXVel, pYVel;
+
+			ss >> pX;
+			ss >> pY;
+			ss >> pXVel;
+			ss >> pYVel;
+
+			players[0]->CreateNetBullet(pX, pY, pXVel, pYVel);
 		}
 	}
 }

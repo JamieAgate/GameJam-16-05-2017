@@ -15,6 +15,9 @@ void Bullet::Setup(int _x, int _y, glm::vec2 _velocity)
 	isActive = true;
 	canBeDestroyed = false;
 
+	xPos = _x;
+	yPos = _y;
+
 	angle = glm::degrees(acos(glm::dot(glm::normalize(velocity), glm::vec2(1, 0))));
 
 	if (velocity.y + sprite->GetY() < sprite->GetY()) 
@@ -30,24 +33,24 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-	sprite->SetX(sprite->GetX() + velocity.x);
-	sprite->SetY(sprite->GetY() + velocity.y);
+	sprite->SetX(xPos += velocity.x);
+	sprite->SetY(yPos += velocity.y);
 	if (sprite->GetX() <= 0 || sprite->GetX() >= 2560 || sprite->GetY() <= 0 || sprite->GetY() >= 1440)
 	{
 		canBeDestroyed = true;
-		if (sprite->GetX() <= 0)
+		if (xPos <= 0)
 		{
 			sprite->SetX(0);
 		}
-		if (sprite->GetX() >= 2560)
+		if (xPos >= 2560)
 		{
 			sprite->SetX(2560);
 		}
-		if (sprite->GetY() <= 0)
+		if (yPos <= 0)
 		{
 			sprite->SetY(0);
 		}
-		if (sprite->GetY() >= 1440)
+		if (yPos >= 1440)
 		{
 			sprite->SetY(1440);
 		}
@@ -56,5 +59,17 @@ void Bullet::Update()
 
 void Bullet::Draw()
 {
-	sprite->Draw(angle);
+	sprite->Draw(xPos, yPos, angle);
+}
+
+BulletData Bullet::GetBulletData()
+{
+	BulletData data;
+
+	data.x = xPos;
+	data.y = yPos;
+	data.xVel = velocity.x;
+	data.yVel = velocity.y;
+
+	return data;
 }

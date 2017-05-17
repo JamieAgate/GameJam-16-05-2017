@@ -1,6 +1,12 @@
 #pragma once
 #include "AnimSprite.h"
 
+//BULLET DATA STRUCT
+struct BulletData
+{
+	float x, y, xVel, yVel;
+};
+
 class Bullet
 {
 public:
@@ -21,6 +27,9 @@ public:
 
 	void Update();
 	void Draw();
+
+	BulletData GetBulletData();
+
 private:
 	bool isActive;
 	bool canBeDestroyed;
@@ -28,4 +37,6 @@ private:
 	glm::vec2 velocity;
 	SDL_Renderer* renderer;
 	AnimSprite* sprite;
+
+	float xPos, yPos;
 };

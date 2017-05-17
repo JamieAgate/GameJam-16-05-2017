@@ -14,6 +14,7 @@ public:
 	void Draw(int _x, int _y, SDL_RendererFlip _flip); //Draw sprite at set position with a flip
 	void Draw(int _x, int _y, int _angle, SDL_RendererFlip _flip);//Draw with position, flip and rotation
 	void Draw(float _angle);
+	void Draw(int _x, int _y, float _angle); 
 
 	void SetFrames(int _xFrame, int _yFrame);
 

@@ -37,4 +37,5 @@ private:
 	void NetRecv();
 
 	TCPConnection* net;
+	int networkTimer;
 };

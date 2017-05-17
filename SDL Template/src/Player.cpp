@@ -15,7 +15,7 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 
 	speed = 10;
 
-	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\Bullet.png", 0, 0, 60, 60);
+	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\SmallBullet.png", 0, 0, 10, 10);
 }
 
 Player::~Player()
@@ -42,6 +42,8 @@ bool Player::InitPlayer()
 
 void Player::Update()
 {
+	requestingBullet = false;
+
 	if (!isRemote) {
 		UpdateXMovement();
 		UpdateYMovement();
@@ -56,23 +58,21 @@ void Player::UpdateBullets()
 	isFiring = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT);
 
 	// check if we should add a new bullet to the bullets vector
-	if (isFiring) {
+	if (isFiring && canShoot) {
+		shotTimer = 0;
+		canShoot = false;
+		requestingBullet = true;
 
-		for (int i = 0; i < 1; i++)
-		{
-			bullets.push_back(new Bullet(renderer, bulletSprite));
-			for (Bullet* b : bullets)
-			{
-				if (!b->GetIsActive())
-				{
-					glm::vec2 bulletVelocity = glm::normalize(glm::vec2(mouseX + mouseWorldX, mouseY + mouseWorldY) - glm::vec2(playerSprite->GetX() + 40, playerSprite->GetY() + 40));
-					bulletVelocity *= 10;
+		bullets.push_back(new Bullet(renderer, bulletSprite));
+		bullets.back()->Setup(playerSprite->GetX() + (playerSprite->GetW() / 2), playerSprite->GetY() + (playerSprite->GetH() / 2), glm::vec2(sin((angle * M_PI / 180)) * -5, cos((angle * M_PI / 180)) * -5));
+	}
 
-					b->Setup(playerSprite->GetX() + 40, playerSprite->GetY() + 40, bulletVelocity);
-
-					break;
-				}
-			}
+	//Run timer for shot delay if can't shoot
+	if (!canShoot) {
+		shotTimer++;
+		if (shotTimer >= shotDelay) {
+			canShoot = true;
+			shotTimer = 0;
 		}
 	}
 
@@ -80,6 +80,7 @@ void Player::UpdateBullets()
 	for (int i = 0; i < bullets.size(); i++) {
 
 		if (!bullets[i]->GetIsActive()) continue;
+
 		bullets[i]->Update();
 		if (CheckPixelData(bullets[i]->GetY(), bullets[i]->GetX(), bullets[i]->GetH(), bullets[i]->GetW()))
 		{
@@ -239,7 +240,7 @@ std::string Player::CreateNetString()
 	ss << "[" << " "
 		<< playerID << " "
 		<< GetPlayerX() << " " << GetPlayerY() << " " << GetPlayerAng() << " "
-		<< "]";
+		<< "]" <<  " ";
 
 	return ss.str();
 }
@@ -249,4 +250,23 @@ void Player::NetworkUpdate(int _x, int _y, float _angle)
 	playerSprite->SetX(_x);
 	playerSprite->SetY(_y);
 	angle = _angle;
+}
+
+std::string Player::CreateProjectilePacket()
+{
+	std::stringstream ss;
+	BulletData data;
+
+	//Convert projectile data into a string
+	data = bullets.back()->GetBulletData();
+
+	ss << "<" << " " << data.x << " " << data.y << " " << data.xVel << " " << data.yVel << " " << ">" << " ";
+
+	return ss.str();
+}
+
+void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel)
+{
+	bullets.push_back(new Bullet(renderer, bulletSprite));
+	bullets.back()->Setup(_x, _y, glm::vec2(_xVel, _yVel));
 }

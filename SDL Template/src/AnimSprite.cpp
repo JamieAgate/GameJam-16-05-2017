@@ -73,6 +73,16 @@ void AnimSprite::Draw(float _angle)
 	}
 }
 
+void AnimSprite::Draw(int _x, int _y, float _angle)
+{
+	UpdateBlit();
+	posRect.x = _x;
+	posRect.y = _y;
+	angle = _angle;
+
+	SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
+}
+
 void AnimSprite::SetFrames(int _xFrame, int _yFrame)
 {
 	xFrame = _xFrame;

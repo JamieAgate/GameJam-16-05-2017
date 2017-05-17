@@ -33,7 +33,12 @@ public:
 	int GetID() { return playerID; }
 	void NetworkUpdate(int _x, int _y, float _angle);
 
+	bool SpawningBullet() { return requestingBullet; }
+	std::string CreateProjectilePacket();
+
 	std::string CreateNetString();
+
+	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel);
 
 private:
 	SDL_Renderer* renderer;
@@ -73,5 +78,11 @@ private:
 
 	//NETWORK PARAMETERS
 	int playerID;
-	bool isRemote; 
+	bool isRemote;
+
+	//Firing variables
+	int shotTimer = 0;
+	int shotDelay = 10;
+	bool canShoot = true;
+	bool requestingBullet = false;
 };
