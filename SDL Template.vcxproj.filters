@@ -90,14 +90,17 @@
     <ClCompile Include="SDL Template\src\GameServer.cpp">
       <Filter>Source Files\Network Classes</Filter>
     </ClCompile>
-    <ClCompile Include="SDL Template\src\Player.cpp">
-      <Filter>Source Files\Game Objects</Filter>
-    </ClCompile>
     <ClCompile Include="SDL Template\src\MainMenu.cpp">
       <Filter>Source Files\Game States</Filter>
     </ClCompile>
     <ClCompile Include="SDL Template\src\Bullet.cpp">
       <Filter>Source Files\Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL Template\src\Pause.cpp">
+      <Filter>Source Files\Game States</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL Template\src\Player.cpp">
+      <Filter>Source Files\Game States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="SDL Template\include\Bullet.h">
       <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL Template\include\Pause.h">
+      <Filter>Header Files\Game States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

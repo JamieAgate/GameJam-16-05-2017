@@ -2,8 +2,10 @@
 #include "AnimSprite.h"
 #include "InputManager.h"
 #include "CollisionMap.h"
+#include "Bullet.h"
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 class Player
 {
@@ -24,6 +26,8 @@ public:
 
 	void SetRelativeMousePos(int _x, int _y) { mouseWorldX = _x; mouseWorldY = _y; }
 
+	void UpdateBullets();
+
 	//Network functions
 	bool IsRemotePlayer() { return isRemote; }
 	int GetID() { return playerID; }
@@ -36,6 +40,11 @@ private:
 	InputManager* input;
 	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
+
+	//Bullets
+	std::vector<Bullet*> bullets;
+	AnimSprite* bulletSprite;
+	bool isFiring;
 
 	//Private Functions///////////////////////////
 	bool InitPlayer();
@@ -57,6 +66,7 @@ private:
 	//Collision Functions and variables
 	bool CheckCollision(int _yOffset, int _xOffset);
 	bool CheckPixelData(int _yOffset, int _xOffset);
+	bool CheckPixelData(int _yOffset, int _xOffset, int _H, int _W);
 
 	int col;
 	int checkPixel;
