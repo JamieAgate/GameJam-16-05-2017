@@ -102,7 +102,7 @@ void Player::UpdateYMovement()
 			i = 11;
 		}
 	}
-	playerSprite->SetX(moveX);
+	playerSprite->SetY(moveY);
 }
 
 bool Player::CheckCollision(int _yOffset, int _xOffset)

@@ -12,13 +12,15 @@ public:
 	InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager* _input);
 	~InGame();
 
-	void Update();
+	void Update() override;
+	void Draw() override;
 
 	void LoadCollisionMap(char* _filePath, int _w, int _h);
 
 private:
 	InputManager* input;
 	CollisionMap* mapData;
+	Sprite* map;
 
 	std::vector<Player*> players;
 };

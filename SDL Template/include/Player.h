@@ -19,7 +19,6 @@ private:
 	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
 
-
 	//Private Functions///////////////////////////
 	bool InitPlayer();
 
