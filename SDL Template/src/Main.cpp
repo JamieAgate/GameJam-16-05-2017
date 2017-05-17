@@ -53,7 +53,6 @@ int main(int arc, char* args[])
 		CloseSDL(NULL, NULL);
 	}
 
-	system("pause");
 	return 0;
 }
 
@@ -123,7 +122,6 @@ void ServerLoop()
 	}
 
 	SDL_DestroyWindow(serverWin);
-	system("pause");
 
 	delete serverInput;
 	delete server;

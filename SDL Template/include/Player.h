@@ -34,6 +34,8 @@ public:
 
 	void SetMove(int _x, int _y) { moveX = _x; moveY = _y; }
 
+	bool GetDead() { return death; }
+
 	//Network functions
 	bool IsRemotePlayer() { return isRemote; }
 	int GetID() { return playerID; }
@@ -43,6 +45,8 @@ public:
 	std::string CreateProjectilePacket();
 
 	std::string CreateNetString();
+	
+	void SetDeath(bool _death) { death = _death; }
 
 	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID);
 

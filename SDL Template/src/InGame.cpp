@@ -66,7 +66,15 @@ void InGame::Update()
 		dataTest++;
 	}
 
+	if (players[0]->GetDead()) {
+		mainPacket << "-" << " " << players[0]->GetID() << " ";
+	}
+	else {
+		mainPacket << "+" << " " << players[0]->GetID() << " ";
+	}
+
 	net->Send(mainPacket.str());
+
 	NetRecv();
 }
 
@@ -119,7 +127,9 @@ void InGame::Draw()
 	
 	//Draw all players
 	for (Player* p : players) {
-		p->Draw();
+		if (!p->GetDead()) {
+			p->Draw();
+		}
 	}
 
 	SDL_SetRenderTarget(renderer, NULL);
@@ -205,6 +215,26 @@ void InGame::NetRecv()
 			ss >> pID;
 
 			players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID);
+		}
+		if (segment == "-") {
+			int pID;
+			ss >> pID;
+
+			for (int i = 0; i < players.size(); i++) {
+				if (players[i]->GetID() == pID) {
+					players[i]->SetDeath(true);
+				}
+			}
+		}
+		if (segment == "+") {
+			int pID;
+			ss >> pID;
+
+			for (int i = 0; i < players.size(); i++) {
+				if (players[i]->GetID() == pID) {
+					players[i]->SetDeath(false);
+				}
+			}
 		}
 	}
 }

@@ -212,6 +212,17 @@ void Player::Draw()
 			cursorSprite->Draw(cursorX + WorldDrawPosX, 560 + WorldDrawPosY, SDL_FLIP_NONE);
 		}
 	}
+
+	std::stringstream strs;
+	strs << health;
+	std::string temp_str = strs.str();
+	char* char_type = (char*)temp_str.c_str();
+
+	if (!isRemote) {
+		text->SetText(char_type);
+		text->SetPos(playerSprite->GetX() - 50, playerSprite->GetY() - 80);
+		text->Draw();
+	}
 }
 
 void Player::UpdateXMovement()
