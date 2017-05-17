@@ -44,7 +44,7 @@ void InGame::Update()
 
 	std::stringstream mainPacket;
 
-	players[0]->Update();
+	players[0]->Update(players);
 	UpdateCamera();
 	players[0]->SetRelativeMousePos(camera.x, camera.y);
 
@@ -186,13 +186,16 @@ void InGame::NetRecv()
 
 		if (segment == "<") { //Projectile Data
 			float pX, pY, pXVel, pYVel;
+			int pID, pDamage;
 
 			ss >> pX;
 			ss >> pY;
 			ss >> pXVel;
 			ss >> pYVel;
+			ss >> pDamage;
+			ss >> pID;
 
-			players[0]->CreateNetBullet(pX, pY, pXVel, pYVel);
+			players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID);
 		}
 	}
 }

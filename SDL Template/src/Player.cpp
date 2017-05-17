@@ -16,6 +16,9 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	speed = 10;
 
 	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\SmallBullet.png", 0, 0, 10, 10);
+
+	//Base properties
+	health = 100;
 }
 
 Player::~Player()
@@ -40,7 +43,7 @@ bool Player::InitPlayer()
 	return true;
 }
 
-void Player::Update()
+void Player::Update(std::vector<Player*> _otherPlayers)
 {
 	requestingBullet = false;
 
@@ -48,11 +51,11 @@ void Player::Update()
 		UpdateXMovement();
 		UpdateYMovement();
 		UpdateRotation();
-		UpdateBullets();
+		UpdateBullets(_otherPlayers);
 	}
 }
 
-void Player::UpdateBullets()
+void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 {
 	// fill mouseX/Y in and work out if left mouse if pressed
 	isFiring = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT);
@@ -63,8 +66,12 @@ void Player::UpdateBullets()
 		canShoot = false;
 		requestingBullet = true;
 
+		glm::vec2 vel(sin((angle * M_PI / 180)) * -5, cos((angle * M_PI / 180)) * -5);
+		int startX = playerSprite->GetX() + (playerSprite->GetW() / 2);
+		int startY = playerSprite->GetY() + (playerSprite->GetH() / 2);
+
 		bullets.push_back(new Bullet(renderer, bulletSprite));
-		bullets.back()->Setup(playerSprite->GetX() + (playerSprite->GetW() / 2), playerSprite->GetY() + (playerSprite->GetH() / 2), glm::vec2(sin((angle * M_PI / 180)) * -5, cos((angle * M_PI / 180)) * -5));
+		bullets.back()->Setup(startX, startY, vel, damage, playerID);
 	}
 
 	//Run timer for shot delay if can't shoot
@@ -86,6 +93,25 @@ void Player::UpdateBullets()
 		{
 			bullets[i]->SetCanBeDestroyed(true);
 		}
+
+		//CHECK FOR PLAYER COLLISION
+		BulletData data = bullets[i]->GetBulletData();
+		if (data.playerID != playerID) { //Check if you are being hit by other players
+			if (SDL_HasIntersection(&playerSprite->GetRect(), &bullets[i]->GetRect())) {
+				health -= data.damage;
+				std::cout << "YOU GOT HIT! " << health << " health remaining!\n";
+
+				bullets[i]->SetCanBeDestroyed(true);
+			}
+		}
+		else {
+			for (int i2 = 1; i2 < _otherPlayers.size(); i2++) {
+				if (SDL_HasIntersection(&_otherPlayers[i2]->GetRect(), &bullets[i]->GetRect())) {
+					bullets[i]->SetCanBeDestroyed(true);
+				}
+			}
+		}
+		
 
 		//...check if any should be 'destroyed' (deleted and set to nullptr)
 		if (bullets[i]->GetCanBeDestroyed())
@@ -260,13 +286,15 @@ std::string Player::CreateProjectilePacket()
 	//Convert projectile data into a string
 	data = bullets.back()->GetBulletData();
 
-	ss << "<" << " " << data.x << " " << data.y << " " << data.xVel << " " << data.yVel << " " << ">" << " ";
+	ss << "<" << " " << data.x << " " << data.y << " " << data.xVel << " " << data.yVel << " " <<
+		data.damage << " " << data.playerID << " " <<
+		">" << " ";
 
 	return ss.str();
 }
 
-void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel)
+void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID)
 {
 	bullets.push_back(new Bullet(renderer, bulletSprite));
-	bullets.back()->Setup(_x, _y, glm::vec2(_xVel, _yVel));
+	bullets.back()->Setup(_x, _y, glm::vec2(_xVel, _yVel), _damage, _playerID);
 }

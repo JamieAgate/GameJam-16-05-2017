@@ -13,12 +13,13 @@ public:
 	Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, bool _isRemote);
 	~Player();
 
-	void Update();
+	void Update(std::vector<Player*> _otherPlayers);
 	void Draw();
 
 	int GetPlayerX() { return playerSprite->GetX(); }
 	int GetPlayerY() { return playerSprite->GetY(); }
 	float GetPlayerAng() { return angle; }
+	SDL_Rect& GetRect() { return playerSprite->GetRect(); }
 
 	void LoadMapData(std::vector<Uint8> _mapData) { mapData = _mapData; }
 
@@ -26,7 +27,7 @@ public:
 
 	void SetRelativeMousePos(int _x, int _y) { mouseWorldX = _x; mouseWorldY = _y; }
 
-	void UpdateBullets();
+	void UpdateBullets(std::vector<Player*> _otherPlayers);
 
 	//Network functions
 	bool IsRemotePlayer() { return isRemote; }
@@ -38,7 +39,7 @@ public:
 
 	std::string CreateNetString();
 
-	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel);
+	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID);
 
 private:
 	SDL_Renderer* renderer;
@@ -82,7 +83,13 @@ private:
 
 	//Firing variables
 	int shotTimer = 0;
-	int shotDelay = 10;
+	int shotDelay = 20;
 	bool canShoot = true;
 	bool requestingBullet = false;
+
+	//Projectile Properties
+	int damage = 5;
+
+	//Player Properties
+	int health;
 };

@@ -7,13 +7,16 @@ Bullet::Bullet(SDL_Renderer* _renderer, AnimSprite* BulletSprite)
 	isActive = false;
 }
 
-void Bullet::Setup(int _x, int _y, glm::vec2 _velocity)
+void Bullet::Setup(int _x, int _y, glm::vec2 _velocity, int _damage, int _playerID)
 {
 	sprite->SetX(_x);
 	sprite->SetY(_y);
 	velocity = _velocity;
 	isActive = true;
 	canBeDestroyed = false;
+
+	damage = _damage;
+	playerID = _playerID;
 
 	xPos = _x;
 	yPos = _y;
@@ -70,6 +73,9 @@ BulletData Bullet::GetBulletData()
 	data.y = yPos;
 	data.xVel = velocity.x;
 	data.yVel = velocity.y;
+
+	data.playerID = playerID;
+	data.damage = damage;
 
 	return data;
 }
