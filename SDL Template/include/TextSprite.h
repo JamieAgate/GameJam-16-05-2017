@@ -12,6 +12,8 @@ public:
 	void ConfigureType(int _typeDelay, Mix_Chunk* typeSound); //Set the sound for typing and configures the delay
 	void SetText(char* text); //Set the message to be typed out
 
+	void SetPos(int _x, int _y) { xPos = _x; yPos = _y; }
+
 	bool IsDone(); //Returns if the message has been completed (Only applies to typing mode)
 
 private:

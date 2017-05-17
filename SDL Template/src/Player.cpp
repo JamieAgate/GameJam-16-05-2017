@@ -19,6 +19,10 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 
 	//Base properties
 	health = 100;
+
+	//LOAD LE HUD
+	monofont = new AnimSprite(renderer, "resources\\monofonto.png", 0, 0, 47, 71);
+	text = new TextSprite(renderer, monofont, 20, 20);
 }
 
 Player::~Player()
@@ -133,6 +137,18 @@ void Player::Draw()
 		}
 	}
 	playerSprite->Draw(angle);
+
+	if (!isRemote) {
+		//DRAW LE HUD
+		std::stringstream strs;
+		strs << health;
+		std::string temp_str = strs.str();
+		char* stuff = (char*)temp_str.c_str();
+
+		text->SetText(stuff);
+		text->SetPos(playerSprite->GetX() - 30, playerSprite->GetY() - 80);
+		text->Draw();
+	}
 }
 
 void Player::UpdateXMovement()

@@ -3,9 +3,12 @@
 #include "InputManager.h"
 #include "CollisionMap.h"
 #include "Bullet.h"
+#include "TextSprite.h"
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <cstring>
+#include <string>
 
 class Player
 {
@@ -29,6 +32,8 @@ public:
 
 	void UpdateBullets(std::vector<Player*> _otherPlayers);
 
+	void SetMove(int _x, int _y) { moveX = _x; moveY = _y; }
+
 	//Network functions
 	bool IsRemotePlayer() { return isRemote; }
 	int GetID() { return playerID; }
@@ -46,6 +51,10 @@ private:
 	InputManager* input;
 	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
+
+	AnimSprite* monofont = NULL;
+	TextSprite* text = NULL;
+	//HUD AF
 
 	//Bullets
 	std::vector<Bullet*> bullets;

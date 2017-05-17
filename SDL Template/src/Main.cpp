@@ -17,6 +17,7 @@ void ServerLoop();
 
 int main(int arc, char* args[])
 {
+	srand(time(NULL)); //SEEEDS
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 

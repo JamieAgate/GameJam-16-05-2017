@@ -24,6 +24,8 @@ private:
 	CollisionMap* mapData;
 	Sprite* map;
 
+	
+
 	//camera
 	void UpdateCamera();
 	SDL_Rect camera{ 0,0,1280,720 };
@@ -31,6 +33,9 @@ private:
 	SDL_Texture* cameraRenderBuffer;
 
 	std::vector<Player*> players;
+
+	//MAP OBJECTS
+	std::vector<glm::vec2> respawnPoints;
 
 	//Network things
 	void NetSend();

@@ -8,8 +8,8 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	mapData = NULL;
 	net = NULL;
 
-	LoadCollisionMap("resources\\map\\map.png", 2560, 1440);
-	map = new Sprite(_renderer, "resources\\map\\map.png",0,0, 2560, 1440);
+	LoadCollisionMap("resources\\map\\complex.png", 2560, 1440);
+	map = new Sprite(_renderer, "resources\\map\\complex.png",0,0, 2560, 1440);
 	cameraRenderBuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1440);
 
 	net = new TCPConnection();
@@ -18,6 +18,10 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 
 	players.push_back(new Player(input, renderer, net->GetConnectionID(), false));
 	players[0]->LoadMapData(mapData->GetMapData());
+
+	glm::vec2 spawnPoint = respawnPoints[rand() % respawnPoints.size()];
+	players[0]->NetworkUpdate(spawnPoint.x, spawnPoint.y, 0);
+	players[0]->SetMove(spawnPoint.x, spawnPoint.y);
 
 	networkTimer = 0;
 }
@@ -94,6 +98,17 @@ void InGame::LoadCollisionMap(char* _filePath, int _w, int _h)
 {
 	if (mapData != NULL) { delete mapData; }
 	mapData = new CollisionMap(_filePath, _w, _h);
+
+	std::vector<unsigned char> loadData = mapData->GetMapData();
+
+	for (int i = 0; i < _w * _h; i++) {
+		int data = (int)loadData[i];
+
+		if (data == 100) { //RESPAWN POOINTS
+			respawnPoints.push_back(glm::vec2(i % 2560, i / 2560));
+		}
+
+	}
 }
 
 void InGame::Draw()
