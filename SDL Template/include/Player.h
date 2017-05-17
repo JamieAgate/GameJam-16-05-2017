@@ -19,6 +19,7 @@ public:
 
 	void AssignID(int _playerID) { playerID = _playerID; }
 
+	void SetRelativeMousePos(int _x, int _y) { mouseWorldX = _x; mouseWorldY = _y; }
 private:
 	SDL_Renderer* renderer;
 	InputManager* input;
@@ -31,12 +32,17 @@ private:
 	//Movement Functions and variables
 	void UpdateXMovement();
 	void UpdateYMovement();
+	void UpdateRotation();
 
 	int moveX;
 	int moveY;
-
 	int speed;
 
+	int mouseX;
+	int mouseY;
+	int mouseWorldX;
+	int mouseWorldY;
+	float angle;
 	//Collision Functions and variables
 	bool CheckCollision(int _yOffset, int _xOffset);
 	bool CheckPixelData(int _yOffset, int _xOffset);

@@ -36,12 +36,12 @@ void Player::Update()
 {
 	UpdateXMovement();
 	UpdateYMovement();
-	//std::cout << playerSprite->GetX() << " , " << playerSprite->GetY() << "\n";
+	UpdateRotation();
 }
 
 void Player::Draw()
 {
-	playerSprite->Draw();
+	playerSprite->Draw(angle);
 }
 
 void Player::UpdateXMovement()
@@ -108,6 +108,19 @@ void Player::UpdateYMovement()
 		i++;
 	}
 	playerSprite->SetY(moveY);
+}
+
+void Player::UpdateRotation()
+{
+	bool mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+	glm::vec2 mouseVec(mouseX +mouseWorldX, mouseY + mouseWorldY);
+	glm::vec2 playerCenter(playerSprite->GetX() + 40, playerSprite->GetY() + 40);
+	angle = glm::degrees(acos(glm::dot(glm::normalize(mouseVec - playerCenter), glm::vec2(1, 0)))) - 90;
+
+	if ((playerSprite->GetY() + 40) < mouseY + mouseWorldY)
+	{
+		angle = 180 - angle;
+	}
 }
 
 bool Player::CheckCollision(int _yOffset, int _xOffset)

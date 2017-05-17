@@ -63,6 +63,16 @@ void AnimSprite::Draw(int _x, int _y, int _angle, SDL_RendererFlip _flip)
 	}
 }
 
+void AnimSprite::Draw(float _angle)
+{
+	if (isValid) { //Check if sprite is valid before drawing
+		UpdateBlit();
+		angle = _angle;
+
+		SDL_RenderCopyEx(renderer, tex, &blit, &posRect, -angle, NULL, flip);
+	}
+}
+
 void AnimSprite::SetFrames(int _xFrame, int _yFrame)
 {
 	xFrame = _xFrame;

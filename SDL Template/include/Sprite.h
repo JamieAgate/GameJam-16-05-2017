@@ -1,5 +1,6 @@
 #pragma once
 #include "SDLInit.h"
+#include <glm.hpp>
 
 class Sprite
 {

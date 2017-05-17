@@ -33,6 +33,7 @@ void InGame::Update()
 {
 	players[0]->Update();
 	UpdateCamera();
+	players[0]->SetRelativeMousePos(camera.x, camera.y);
 }
 
 void InGame::UpdateCamera()
