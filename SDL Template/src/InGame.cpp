@@ -22,6 +22,10 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 
 InGame::~InGame()
 {
+	std::stringstream ss;
+	ss << "|" << players[0]->GetID() << " ]";
+	net->Send(ss.str());
+
 	for (int i = 0; i < players.size(); i++)
 	{
 		delete players.at(i);
@@ -37,7 +41,13 @@ void InGame::Update()
 	UpdateCamera();
 	players[0]->SetRelativeMousePos(camera.x, camera.y);
 
-	NetSend();
+	if (input->WasKeyPressed(SDL_SCANCODE_ESCAPE)) {
+		std::stringstream ss;
+		ss << "|" << " " << players[0]->GetID() << " ]";
+		net->Send(ss.str());
+	}
+	else { NetSend(); }
+
 	NetRecv();
 }
 
@@ -134,6 +144,22 @@ void InGame::NetRecv()
 			}
 
 			netPlayer->NetworkUpdate(posX, posY, playerAngle);
+		}
+		else if (segment == "|") {
+			
+			int deleteID;
+			ss >> deleteID;
+
+			std::cout << "Recieved deletion request for " << deleteID << "\n";
+
+			for (int i = 0; i < players.size(); i++) {
+				if (players[i]->GetID() == deleteID) {
+					delete players[i];
+					players[i] = nullptr;
+				}
+			}
+
+			players.erase(std::remove(players.begin(), players.end(), nullptr), players.end());
 		}
 	}
 }

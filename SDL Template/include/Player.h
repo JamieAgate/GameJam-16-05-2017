@@ -4,6 +4,7 @@
 #include "CollisionMap.h"
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 class Player
 {
