@@ -51,6 +51,8 @@ private:
 	InputManager* input;
 	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
+	Sprite* deathScreen;
+	Sprite* cursorSprite;
 
 	AnimSprite* monofont = NULL;
 	TextSprite* text = NULL;
@@ -63,6 +65,11 @@ private:
 
 	//Private Functions///////////////////////////
 	bool InitPlayer();
+	void CheckDeath();
+	void DeathUpdate();
+	int timer;
+	int cursorX;
+	bool drawCursor;
 
 	//Movement Functions and variables
 	void UpdateXMovement();
@@ -101,4 +108,5 @@ private:
 
 	//Player Properties
 	int health;
+	bool death;
 };

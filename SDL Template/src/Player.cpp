@@ -13,10 +13,14 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	moveX = playerSprite->GetX();
 	moveY = playerSprite->GetY();
 
+	death = false;
+	timer = 0;
 	speed = 10;
 
 	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\SmallBullet.png", 0, 0, 10, 10);
-
+	deathScreen = new Sprite(renderer, "resources\\DeathScreen\\DeathScreen.png", 0, 0, 1280, 720);
+	cursorSprite = new Sprite(renderer, "resources\\MainMenu\\cursor.png", 540, 590, 50, 100);
+	cursorX = 540;
 	//Base properties
 	health = 100;
 
@@ -33,6 +37,7 @@ Player::~Player()
 		delete b;
 	}
 	delete playerSprite;
+	delete deathScreen;
 }
 
 bool Player::InitPlayer()
@@ -52,10 +57,51 @@ void Player::Update(std::vector<Player*> _otherPlayers)
 	requestingBullet = false;
 
 	if (!isRemote) {
-		UpdateXMovement();
-		UpdateYMovement();
-		UpdateRotation();
-		UpdateBullets(_otherPlayers);
+		if (!death)
+		{
+			if (input->IsKeyDown(SDL_SCANCODE_M))
+			{
+				health -= 10;
+			}
+			UpdateXMovement();
+			UpdateYMovement();
+			UpdateRotation();
+			CheckDeath();
+		}
+		else
+		{
+			DeathUpdate();
+		}
+			UpdateBullets(_otherPlayers);
+	}
+}
+
+void Player::DeathUpdate()
+{
+	Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+
+	if ((mouseX > 640 && mouseX < 1280) && (mouseY > 560 && mouseY < 720)) { //New Game Button
+		drawCursor = true;
+		cursorX = 540 - abs((sin(timer * 0.04) * 15));
+		if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT) || input->IsKeyDown(SDL_SCANCODE_RETURN))
+		{
+
+		}
+	}
+	else
+	{
+		drawCursor = false;
+	}
+	timer++;
+}
+
+void Player::CheckDeath()
+{
+	if (health <= 0)
+	{
+		death = true;
+		canShoot = false;
+		int timer = 0;
 	}
 }
 
@@ -65,7 +111,7 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 	isFiring = SDL_GetMouseState(&mouseX, &mouseY) & SDL_BUTTON(SDL_BUTTON_LEFT);
 
 	// check if we should add a new bullet to the bullets vector
-	if (isFiring && canShoot) {
+	if (isFiring && canShoot &&!death) {
 		shotTimer = 0;
 		canShoot = false;
 		requestingBullet = true;
@@ -101,7 +147,7 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 		//CHECK FOR PLAYER COLLISION
 		BulletData data = bullets[i]->GetBulletData();
 		if (data.playerID != playerID) { //Check if you are being hit by other players
-			if (SDL_HasIntersection(&playerSprite->GetRect(), &bullets[i]->GetRect())) {
+			if (SDL_HasIntersection(&playerSprite->GetRect(), &bullets[i]->GetRect()) && !death) {
 				health -= data.damage;
 				std::cout << "YOU GOT HIT! " << health << " health remaining!\n";
 
@@ -136,18 +182,35 @@ void Player::Draw()
 			b->Draw();
 		}
 	}
-	playerSprite->Draw(angle);
-
-	if (!isRemote) {
-		//DRAW LE HUD
-		std::stringstream strs;
-		strs << health;
-		std::string temp_str = strs.str();
-		char* stuff = (char*)temp_str.c_str();
-
-		text->SetText(stuff);
-		text->SetPos(playerSprite->GetX() - 30, playerSprite->GetY() - 80);
-		text->Draw();
+	if (!death)
+	{
+		playerSprite->Draw(angle);
+	}
+	else
+	{
+		int WorldDrawPosX = playerSprite->GetX() - 640;
+		if (WorldDrawPosX > 1280)
+		{
+			WorldDrawPosX = 1280;
+		}
+		if (WorldDrawPosX < 0)
+		{
+			WorldDrawPosX = 0;
+		}
+		int WorldDrawPosY = playerSprite->GetY() - 360;
+		if (WorldDrawPosY > 720)
+		{
+			WorldDrawPosY = 720;
+		}
+		if (WorldDrawPosY < 0)
+		{
+			WorldDrawPosY = 0;
+		}
+		deathScreen->Draw(WorldDrawPosX,WorldDrawPosY, SDL_FLIP_NONE);
+		if (drawCursor)
+		{
+			cursorSprite->Draw(cursorX + WorldDrawPosX, 560 + WorldDrawPosY, SDL_FLIP_NONE);
+		}
 	}
 }
 
