@@ -48,6 +48,8 @@ public:
 	
 	void SetDeath(bool _death) { death = _death; }
 
+	bool CheckRespawn();
+
 	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID);
 
 private:
@@ -61,6 +63,8 @@ private:
 	AnimSprite* monofont = NULL;
 	TextSprite* text = NULL;
 	//HUD AF
+
+	bool respawn = false;
 
 	//Bullets
 	std::vector<Bullet*> bullets;

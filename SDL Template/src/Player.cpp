@@ -85,7 +85,7 @@ void Player::DeathUpdate()
 		cursorX = 540 - abs((sin(timer * 0.04) * 15));
 		if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT) || input->IsKeyDown(SDL_SCANCODE_RETURN))
 		{
-
+			respawn = true;
 		}
 	}
 	else
@@ -387,4 +387,15 @@ void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _
 {
 	bullets.push_back(new Bullet(renderer, bulletSprite));
 	bullets.back()->Setup(_x, _y, glm::vec2(_xVel, _yVel), _damage, _playerID);
+}
+
+
+bool Player::CheckRespawn()
+{
+	if (respawn == true) {
+		respawn = false;
+		return true;
+	}
+
+	return false;
 }

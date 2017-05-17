@@ -80,6 +80,13 @@ void InGame::Update()
 
 	if (players[0]->GetDead()) {
 		mainPacket << "-" << " " << players[0]->GetID() << " ";
+
+		if (players[0]->CheckRespawn()) {
+			glm::vec2 spawnPoint = respawnPoints[rand() % respawnPoints.size()];
+			players[0]->NetworkUpdate(spawnPoint.x, spawnPoint.y, 0);
+			players[0]->SetMove(spawnPoint.x, spawnPoint.y);
+			players[0]->SetDeath(false);
+		}
 	}
 	else {
 		mainPacket << "+" << " " << players[0]->GetID() << " ";
