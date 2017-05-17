@@ -36,7 +36,7 @@ void Player::Update()
 {
 	UpdateXMovement();
 	UpdateYMovement();
-	std::cout << playerSprite->GetX() << " , " << playerSprite->GetY() << "\n";
+	//std::cout << playerSprite->GetX() << " , " << playerSprite->GetY() << "\n";
 }
 
 void Player::Draw()
