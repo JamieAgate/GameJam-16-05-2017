@@ -24,6 +24,18 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	players[0]->SetMove(spawnPoint.x, spawnPoint.y);
 
 	networkTimer = 0;
+
+	char* tracks[5];
+
+	int track = -1;
+	tracks[++track] = "Resources\\Music\\fantastique.mp3";
+	tracks[++track] = "Resources\\Music\\JackADandy.mp3";
+	tracks[++track] = "Resources\\Music\\Macintosh.mp3";
+	tracks[++track] = "Resources\\Music\\Metalcrush.mp3";
+	tracks[++track] = "Resources\\Music\\Grandma.mp3";
+
+	sounds = new SoundManager(1, tracks[rand() % 5]);
+	sounds->PlayBGM(-1);
 }
 
 InGame::~InGame()

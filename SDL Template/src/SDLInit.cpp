@@ -25,6 +25,8 @@ bool InitExtensions()
 		return false;
 	}
 
+	Mix_Volume(-1, 64);
+
 	if (SDLNet_Init() == -1) {
 		std::cout << "SDLNet failed to initialise: " << SDLNet_GetError() << "\n";
 		system("pause");

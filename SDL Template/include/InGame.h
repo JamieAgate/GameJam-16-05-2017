@@ -3,6 +3,7 @@
 #include "GameStates.h"
 #include "GSManager.h"
 #include "InputManager.h"
+#include "SoundManager.h"
 #include "CollisionMap.h"
 #include "Player.h"
 #include "TCPConnection.h"
@@ -33,6 +34,8 @@ private:
 	SDL_Texture* cameraRenderBuffer;
 
 	std::vector<Player*> players;
+
+	SoundManager* sounds;
 
 	//MAP OBJECTS
 	std::vector<glm::vec2> respawnPoints;
