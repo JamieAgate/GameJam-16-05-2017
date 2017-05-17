@@ -143,7 +143,10 @@ void InGame::Draw()
 			p->Draw();
 		}
 	}
-
+	if (players[0]->GetDead())
+	{
+		players[0]->Draw();
+	}
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderCopy(renderer, cameraRenderBuffer, &camera, &screen);
 }
