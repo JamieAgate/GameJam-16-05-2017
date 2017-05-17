@@ -53,19 +53,13 @@ void InGame::Update()
 		ss << "|" << " " << players[0]->GetID() << " ]";
 		net->Send(ss.str());
 	}
-	else if (networkTimer % 2 == 0) { 
-		mainPacket << players[0]->CreateNetString();
-		dataTest++;
-	}
+	
+	mainPacket << players[0]->CreateNetString();
 
 	//Check if player wants to send bullet data to server
 	if (players[0]->SpawningBullet()) {
 		mainPacket << players[0]->CreateProjectilePacket();
 		dataTest++;
-	}
-
-	if (dataTest > 1) {
-		int BREAKHERE = 0;
 	}
 
 	net->Send(mainPacket.str());
