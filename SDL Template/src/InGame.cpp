@@ -104,6 +104,8 @@ void InGame::Update()
 		mainPacket << "=" << " " << killerID << " "; //Kill accredit packet
 	}
 
+	UpdatePowerUps();
+
 	net->Send(mainPacket.str());
 
 	NetRecv();
@@ -122,7 +124,7 @@ void InGame::UpdatePowerUps()
 		}
 	}
 	PowerUpsSpawned.erase(std::remove(PowerUpsSpawned.begin(), PowerUpsSpawned.end(), nullptr), PowerUpsSpawned.end());
-	if (PowerUpSpawnTimer == 1200)
+	if (PowerUpSpawnTimer == 300)
 	{
 		RespawnPowerUps();
 		PowerUpSpawnTimer = 0;
