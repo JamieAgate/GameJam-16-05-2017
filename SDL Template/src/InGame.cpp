@@ -35,7 +35,7 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	int track = -1;
 	tracks[++track] = "Resources\\Music\\fantastique.mp3";
 	tracks[++track] = "Resources\\Music\\JackADandy.mp3";
-	tracks[++track] = "Resources\\Music\\Macintosh.mp3";
+	tracks[++track] = "Resources\\Music\\JackADandy.mp3";
 	tracks[++track] = "Resources\\Music\\Metalcrush.mp3";
 	tracks[++track] = "Resources\\Music\\Grandma.mp3";
 
