@@ -4,7 +4,7 @@
 //BULLET DATA STRUCT
 struct BulletData
 {
-	int playerID, damage;
+	int playerID, damage, skin;
 	float x, y, xVel, yVel;
 };
 
@@ -31,7 +31,9 @@ public:
 	void Update();
 	void Draw();
 
-	BulletData GetBulletData();
+	BulletData GetBulletData(int _skin);
+
+	void SetSprite(AnimSprite* _sprite) { sprite = _sprite; };
 
 private:
 	bool isActive;

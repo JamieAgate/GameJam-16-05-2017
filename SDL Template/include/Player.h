@@ -50,20 +50,25 @@ public:
 
 	bool CheckRespawn();
 
-	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID);
+	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID, int _skin, std::vector<Player*> _playerData);
 
 	int GetKillerID() { int killer = killerID; killerID = -1; return killer; }
 
 	void GiveCameraPos(int _x, int _y) { cameraPosX = _x; cameraPosY = _y; }
 	int GetFrags() { return frags; }
 
+	bool GetSkin() { return playerSkin; }
+
 	void GiveFrag() { frags++; }
+
+	void SetSkin(int _newSkin) { playerSkin = _newSkin; }
 
 private:
 	SDL_Renderer* renderer;
 	InputManager* input;
 	std::vector<Uint8> mapData;
 	AnimSprite* playerSprite;
+
 	Sprite* deathScreen;
 	Sprite* cursorSprite;
 
@@ -75,6 +80,9 @@ private:
 
 	//Bullets
 	std::vector<Bullet*> bullets;
+	//ALL BULLETS
+	AnimSprite* bulletSkinSprites[4];
+
 	AnimSprite* bulletSprite;
 	bool isFiring;
 
@@ -138,4 +146,8 @@ private:
 	int frameTimer = 0;
 	int frameTick = 0;
 	int frameDelay = 5;
+
+	int playerSkin;
+
+	char* bulletSkins[4];
 };

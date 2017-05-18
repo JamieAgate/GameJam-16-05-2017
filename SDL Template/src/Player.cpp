@@ -18,7 +18,6 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	speed = 10;
 	bulletVelocity = 5;
 
-	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\SmallBullet.png", 0, 0, 10, 10);
 	deathScreen = new Sprite(renderer, "resources\\DeathScreen\\DeathScreen.png", 0, 0, 1280, 720);
 	cursorSprite = new Sprite(renderer, "resources\\MainMenu\\cursor.png", 540, 590, 50, 100);
 	cursorX = 540;
@@ -45,14 +44,20 @@ Player::~Player()
 bool Player::InitPlayer()
 {
 	//PICK A RANDOM SPRITE
-	char* skins[4];
+	playerSkin = rand() % 4;
 
-	skins[0] = "resources\\player\\Flora.png";
-	skins[1] = "resources\\player\\Bunny.png";
-	skins[2] = "resources\\player\\PumpkinDude.png";
-	skins[3] = "resources\\player\\Santa.png";
+	bulletSkins[0] = "resources\\projectile\\FloraProjectile.png";
+	bulletSkins[1] = "resources\\projectile\\BunnyProjectile.png";
+	bulletSkins[2] = "resources\\projectile\\PumpkinProjectile.png";
+	bulletSkins[3] = "resources\\projectile\\SantaProjectile.png";
 
-	playerSprite = new AnimSprite(renderer, skins[rand() % 4], 640, 360, 76, 46);
+
+	for (int i = 0; i < 4; i++) { bulletSkinSprites[i] = new AnimSprite(renderer, bulletSkins[i], 0, 0, 10, 10); }
+
+	playerSprite = new AnimSprite(renderer, "resources\\player\\players.png", 640, 360, 76, 76);
+	playerSprite->SetFrames(0, playerSkin);
+
+	bulletSprite = new AnimSprite(renderer, bulletSkins[playerSkin], 0, 0, 10, 10);
 
 	if (playerSprite == NULL)
 	{
@@ -158,7 +163,7 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 		}
 
 		//CHECK FOR PLAYER COLLISION
-		BulletData data = bullets[i]->GetBulletData();
+		BulletData data = bullets[i]->GetBulletData(playerSkin);
 		if (data.playerID != playerID) { //Check if you are being hit by other players
 			if (SDL_HasIntersection(&playerSprite->GetRect(), &bullets[i]->GetRect()) && !death) {
 				health -= data.damage;
@@ -411,19 +416,25 @@ std::string Player::CreateProjectilePacket()
 	BulletData data;
 
 	//Convert projectile data into a string
-	data = bullets.back()->GetBulletData();
+	data = bullets.back()->GetBulletData(playerSkin);
 
 	ss << "<" << " " << data.x << " " << data.y << " " << data.xVel << " " << data.yVel << " " <<
-		data.damage << " " << data.playerID << " " <<
+		data.damage << " " << data.playerID << " " << data.skin << " " <<
 		">" << " ";
 
 	return ss.str();
 }
 
-void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID)
+void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID, int _skin, std::vector<Player*> _playerData)
 {
-	bullets.push_back(new Bullet(renderer, bulletSprite));
+	bullets.push_back(new Bullet(renderer, bulletSkinSprites[_skin]));
 	bullets.back()->Setup(_x, _y, glm::vec2(_xVel, _yVel), _damage, _playerID);
+
+	for (Player* p : _playerData) {
+		if (p->GetID() == _playerID && p->GetSkin() != _skin) {
+			p->SetSkin(_skin);
+		}
+	}
 }
 
 
@@ -444,5 +455,5 @@ void Player::UpdateAnim()
 
 	if (frameTimer % frameDelay == 0) frameTick++;
 
-	playerSprite->SetFrames(frameTick % 8, 0);
+	playerSprite->SetFrames(frameTick % 8, playerSkin);
 }

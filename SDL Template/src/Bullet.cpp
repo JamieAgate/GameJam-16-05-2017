@@ -65,7 +65,7 @@ void Bullet::Draw()
 	sprite->Draw(xPos, yPos, angle);
 }
 
-BulletData Bullet::GetBulletData()
+BulletData Bullet::GetBulletData(int _skin)
 {
 	BulletData data;
 
@@ -76,6 +76,7 @@ BulletData Bullet::GetBulletData()
 
 	data.playerID = playerID;
 	data.damage = damage;
+	data.skin = _skin;
 
 	return data;
 }

@@ -300,7 +300,7 @@ void InGame::NetRecv()
 
 		if (segment == "<") { //Projectile Data
 			float pX, pY, pXVel, pYVel;
-			int pID, pDamage;
+			int pID, pDamage, pSkin;
 
 			ss >> pX;
 			ss >> pY;
@@ -308,9 +308,10 @@ void InGame::NetRecv()
 			ss >> pYVel;
 			ss >> pDamage;
 			ss >> pID;
+			ss >> pSkin;
 
 			if (pID != players[0]->GetID()) {
-				players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID);
+				players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID, pSkin, players);
 			}
 		}
 		if (segment == "-") { //Death Packet
