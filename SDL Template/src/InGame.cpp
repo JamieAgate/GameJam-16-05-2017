@@ -23,6 +23,11 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	players[0]->NetworkUpdate(spawnPoint.x, spawnPoint.y, 0);
 	players[0]->SetMove(spawnPoint.x, spawnPoint.y);
 
+	PowerUpSpawnTimer = 0;
+	SpeedPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerUp.png", -80, -80, 40, 40);
+	AttackPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerUp2.png", -80, -80, 40, 40);
+	RespawnPowerUps();
+
 	networkTimer = 0;
 
 	char* tracks[5];
@@ -50,6 +55,8 @@ InGame::~InGame()
 	}
 
 	delete map;
+	delete SpeedPower;
+	delete AttackPower;
 	SDL_DestroyTexture(cameraRenderBuffer);
 }
 
@@ -92,9 +99,55 @@ void InGame::Update()
 		mainPacket << "+" << " " << players[0]->GetID() << " ";
 	}
 
+	UpdatePowerUps();
+
 	net->Send(mainPacket.str());
 
 	NetRecv();
+}
+
+void InGame::UpdatePowerUps()
+{
+	for (int i = 0; i < PowerUpsSpawned.size(); i++)
+	{
+		PowerUpsSpawned[i]->Update();
+		if (SDL_HasIntersection(&PowerUpsSpawned[i]->GetHitbox(), &players[0]->GetRect()))
+		{
+			powerUpSpawnPoints.push_back(PowerUpsSpawned[i]->GetUsedSpawnPoint());
+			delete PowerUpsSpawned.at(i);
+			PowerUpsSpawned[i] = nullptr;
+		}
+	}
+	PowerUpsSpawned.erase(std::remove(PowerUpsSpawned.begin(), PowerUpsSpawned.end(), nullptr), PowerUpsSpawned.end());
+	if (PowerUpSpawnTimer == 1200)
+	{
+		RespawnPowerUps();
+		PowerUpSpawnTimer = 0;
+	}
+	PowerUpSpawnTimer++;
+}
+
+void InGame::RespawnPowerUps()
+{
+	for (int i = 0; i < powerUpSpawnPoints.size(); i++)
+	{
+		int PowerUpType = rand() % 2;
+		switch (PowerUpType)
+		{
+		case 0:
+		{
+			powerUp = SpeedPower;
+			break;
+		}
+		case 1:
+		{
+			powerUp = AttackPower;
+			break;
+		}
+		}
+		PowerUpsSpawned.push_back(new PowerUp(powerUp, PowerUpType, powerUpSpawnPoints[i]));
+	}
+	powerUpSpawnPoints.clear();
 }
 
 void InGame::UpdateCamera()
@@ -134,6 +187,10 @@ void InGame::LoadCollisionMap(char* _filePath, int _w, int _h)
 		if (data == 100) { //RESPAWN POOINTS
 			respawnPoints.push_back(glm::vec2(i % 2560, i / 2560));
 		}
+		if (data == 25)
+		{
+			powerUpSpawnPoints.push_back(glm::vec2(i % 2560, i / 2560));
+		}
 
 	}
 }
@@ -153,6 +210,11 @@ void InGame::Draw()
 	if (players[0]->GetDead())
 	{
 		players[0]->Draw();
+	}
+
+	for (int i = 0; i < PowerUpsSpawned.size(); i++)
+	{
+		PowerUpsSpawned[i]->Draw();
 	}
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderCopy(renderer, cameraRenderBuffer, &camera, &screen);

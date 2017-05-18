@@ -7,6 +7,7 @@
 #include "CollisionMap.h"
 #include "Player.h"
 #include "TCPConnection.h"
+#include "PowerUps.h"
 #include <sstream>
 
 class InGame : public GameState
@@ -16,6 +17,9 @@ public:
 	~InGame() override;
 
 	void Update() override;
+
+	void UpdatePowerUps();
+	void RespawnPowerUps();
 	void Draw() override;
 
 	void LoadCollisionMap(char* _filePath, int _w, int _h);
@@ -24,8 +28,9 @@ private:
 	InputManager* input;
 	CollisionMap* mapData;
 	Sprite* map;
-
-	
+	AnimSprite* SpeedPower;
+	AnimSprite* AttackPower;
+	AnimSprite* powerUp;
 
 	//camera
 	void UpdateCamera();
@@ -39,6 +44,9 @@ private:
 
 	//MAP OBJECTS
 	std::vector<glm::vec2> respawnPoints;
+	std::vector<glm::vec2> powerUpSpawnPoints;
+	std::vector<PowerUp*> PowerUpsSpawned;
+	int PowerUpSpawnTimer;
 
 	//Network things
 	void NetSend();
