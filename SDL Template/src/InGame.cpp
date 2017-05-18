@@ -152,7 +152,7 @@ void InGame::RespawnPowerUps()
 		}
 		case 2:
 		{
-			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\Powerupattkspeed.png", -80, -80, 33, 27);
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\PowerupATTSPEED.png", -80, -80, 33, 27);
 			break;
 		}
 		case 3:
