@@ -23,6 +23,7 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	cursorX = 540;
 	//Base properties
 	health = 100;
+	frags = 0;
 
 	//LOAD LE HUD
 	monofont = new AnimSprite(renderer, "resources\\monofonto.png", 0, 0, 47, 71);
@@ -151,6 +152,8 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 				health -= data.damage;
 				std::cout << "YOU GOT HIT! " << health << " health remaining!\n";
 
+				if (health <= 0) { killerID = data.playerID; }
+
 				bullets[i]->SetCanBeDestroyed(true);
 			}
 		}
@@ -171,9 +174,12 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 		}
 	}
 	bullets.erase(std::remove(bullets.begin(), bullets.end(), nullptr), bullets.end());
+
+
+	
 }
 
-void Player::Draw()
+void Player::Draw(std::vector<Player*> _otherPlayers)
 {
 	for (Bullet* b : bullets)
 	{
@@ -219,8 +225,25 @@ void Player::Draw()
 	char* char_type = (char*)temp_str.c_str();
 
 	if (!isRemote) {
+		monofont->SetSize(47, 71);
 		text->SetText(char_type);
 		text->SetPos(playerSprite->GetX() - 50, playerSprite->GetY() - 80);
+		text->Draw();
+	}
+
+	//Display the score
+	monofont->SetSize(23, 35);
+
+	for (int i = 0; i < _otherPlayers.size(); i++) {
+		std::stringstream strs;
+		strs << "Player " << _otherPlayers[i]->GetID() << ": ";
+		strs << _otherPlayers[i]->GetFrags();
+
+		std::string temp_str = strs.str();
+		char* char_type = (char*)temp_str.c_str();
+
+		text->SetPos(cameraPosX + (i * 300), cameraPosY);
+		text->SetText(char_type);
 		text->Draw();
 	}
 }
@@ -393,6 +416,7 @@ void Player::CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _
 bool Player::CheckRespawn()
 {
 	if (respawn == true) {
+		health = 100;
 		respawn = false;
 		return true;
 	}
