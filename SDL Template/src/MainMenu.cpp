@@ -69,7 +69,6 @@ void MainMenu::Update()
 
 	if (jumpToGameLoop)
 	{
-		std::cout << "Will Jump to game Loop\n";
 		GS_Manager->ChangeState(new InGame(renderer, GS_Manager, input));
 	}
 }
@@ -111,14 +110,6 @@ void MainMenu::MouseInput()
 
 			jumpToGameLoop = true;
 		}
-	}
-	else if ((mouseX > 200 && mouseX < 620) && (mouseY > 450 && mouseY < 550)) { //Options Button
-		cursorSprite->Draw(155 - abs((sin(timer * 0.04) * 15)), 450, SDL_FLIP_NONE);
-		hover = 2;
-	}
-	else if ((mouseX > 650 && mouseX < 1090) && (mouseY > 350 && mouseY < 450)) { //Load game button
-		cursorSprite->Draw(1090 + abs((sin(timer * 0.04) * 15)), 350, SDL_FLIP_HORIZONTAL);
-		hover = 3;
 	}
 	else if ((mouseX > 650 && mouseX < 1090) && (mouseY > 450 && mouseY < 550)) { //Exit game button
 		cursorSprite->Draw(1090 + abs((sin(timer * 0.04) * 15)), 450, SDL_FLIP_HORIZONTAL);
