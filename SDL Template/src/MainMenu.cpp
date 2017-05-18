@@ -38,8 +38,6 @@ bool MainMenu::InitMenu()
 	title2 = new Sprite(renderer, "resources\\MainMenu\\title2.png", 2000, 0, 670, 200);
 
 	newGameButton = new Sprite(renderer, "resources\\MainMenu\\newgame.png", 1000, 0, 420, 100);
-	loadGameButton = new Sprite(renderer, "resources\\MainMenu\\Loadgame.png", 1000, 0, 440, 100);
-	optionsButton = new Sprite(renderer, "resources\\MainMenu\\Options.png", 1000, 0, 305, 100);
 	exitButton = new Sprite(renderer, "resources\\MainMenu\\Exit.png", 1000, 0, 400, 100);
 
 	cursorSprite = new Sprite(renderer, "resources\\MainMenu\\cursor.png", 1000, 0, 50, 100); //CURSOR
@@ -84,8 +82,6 @@ void MainMenu::Intro()
 		}
 		else if (timer < 150) { //Buttons appear on screen
 			newGameButton->Draw(200, 720 - ((timer - 120) * (370 / 30)));
-			loadGameButton->Draw(650, 720 - ((timer - 120) * (370 / 30)));
-			optionsButton->Draw(200, 720 - ((timer - 120) * (270 / 30)));
 			exitButton->Draw(650, 720 - ((timer - 120) * (270 / 30)));
 		}
 
@@ -136,8 +132,6 @@ void MainMenu::Idle()
 	title1->Draw(380, 20);
 	title2->Draw(320, 180);
 	newGameButton->Draw(200, 350);
-	loadGameButton->Draw(650, 350);
-	optionsButton->Draw(200, 450);
 	exitButton->Draw(650, 450);
 }
 

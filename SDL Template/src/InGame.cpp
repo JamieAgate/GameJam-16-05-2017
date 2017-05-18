@@ -161,15 +161,12 @@ void InGame::RespawnPowerUps()
 			break;
 		}
 		}
-		std::cout << powerUpSpawnPoints[i].x << " , " << powerUpSpawnPoints[i].y << "\n";
 		PowerUpsSpawned.push_back(new PowerUp(powerUp, PowerUpType, powerUpSpawnPoints[i]));
 	}
-	std::cout << "before clear: " << powerUpSpawnPoints.size() << "\n";
 	if (powerUpSpawnPoints.size() > 0)
 	{
 		powerUpSpawnPoints.clear();
 	}
-	std::cout << "after clear: " << powerUpSpawnPoints.size() << "\n";
 }
 
 void InGame::UpdateCamera()
@@ -236,7 +233,7 @@ void InGame::Draw()
 
 	for (int i = 0; i < PowerUpsSpawned.size(); i++)
 	{
-		PowerUpsSpawned[i]->Draw();
+		//PowerUpsSpawned[i]->Draw();
 	}
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderCopy(renderer, cameraRenderBuffer, &camera, &screen);
