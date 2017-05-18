@@ -98,14 +98,58 @@ void GameServer::CheckClientSockets()
 			else {
 				for (int i = 0; i < clientSockets.size(); i++) {
 					int msgLength = strlen(buffer) + 1;
-					if (i != client) {
-						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+					bool messageSent = false;
+
+					//FRAG DATA HIGH PRIOTY
+					bool fragdata = false;
+
+					for (int frags = 0; frags < msgLength; frags++) {
+						if (buffer[frags] == '=') {
+							fragdata = true;
+							std::cout << "Recieved frag data, the killer is " << buffer[frags + 2] << "\n";
+
+						}
 					}
 
-					if (buffer[0] == '|') {
+					std::vector<bool> fragCheck;
+					if (fragdata) {
+						for (int newBool = 0; newBool < clientSockets.size(); newBool++) { fragCheck.push_back(false); }
+					}
+
+					if (fragdata && !messageSent) {
+						std::cout << "SENDING FRAG DATA BACK TO YOUR SORRY ASS\n";
 						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+						messageSent = true;
+
+						fragCheck[i] = true;
+
+					}
+
+					//SEND DATA BACK
+					if (fragdata) {
+						for (int sendBack = 0; sendBack < clientSockets.size(); sendBack++) {
+							if (!fragCheck[i]) {
+								SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+								std::cout << "Sending data back to client: " << sendBack << "\n";
+								fragCheck[i] = true;
+							}
+						}
+					}
+
+					//END
+
+					if (i != client) {
+						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+						messageSent = true;
+					}
+
+					if (buffer[0] == '|' && !messageSent) {
+						SDLNet_TCP_Send(clientSockets[i], (void *)buffer, msgLength);
+						messageSent = true;
 						std::cout << buffer << "\n";
 					}
+
+					
 				}
 
 				if (buffer[0] == '|') {

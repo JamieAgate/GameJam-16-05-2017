@@ -99,7 +99,10 @@ void InGame::Update()
 		mainPacket << "+" << " " << players[0]->GetID() << " ";
 	}
 
-	UpdatePowerUps();
+	int killerID = players[0]->GetKillerID();
+	if (killerID != -1) {
+		mainPacket << "=" << " " << killerID << " "; //Kill accredit packet
+	}
 
 	net->Send(mainPacket.str());
 
@@ -171,6 +174,8 @@ void InGame::UpdateCamera()
 		camera.y = 0;
 	}
 
+	players[0]->GiveCameraPos(camera.x, camera.y);
+
 	//std::cout << camera.x << " , " << camera.y << "\n";
 }
 
@@ -204,12 +209,12 @@ void InGame::Draw()
 	//Draw all players
 	for (Player* p : players) {
 		if (!p->GetDead()) {
-			p->Draw();
+			p->Draw(players);
 		}
 	}
 	if (players[0]->GetDead())
 	{
-		players[0]->Draw();
+		players[0]->Draw(players);
 	}
 
 	for (int i = 0; i < PowerUpsSpawned.size(); i++)
@@ -255,19 +260,23 @@ void InGame::NetRecv()
 			ss >> posY;
 			ss >> playerAngle;
 
-			Player* netPlayer = NULL;
-			for (Player* p : players) {
-				if (p->GetID() == playerID) {
-					netPlayer = p;
+			if (playerID != players[0]->GetID())
+			{
+
+				Player* netPlayer = NULL;
+				for (Player* p : players) {
+					if (p->GetID() == playerID) {
+						netPlayer = p;
+					}
 				}
-			}
 
-			if (netPlayer == NULL) {
-				netPlayer = new Player(input, renderer, playerID, true);
-				players.push_back(netPlayer);
-			}
+				if (netPlayer == NULL) {
+					netPlayer = new Player(input, renderer, playerID, true);
+					players.push_back(netPlayer);
+				}
 
-			netPlayer->NetworkUpdate(posX, posY, playerAngle);
+				netPlayer->NetworkUpdate(posX, posY, playerAngle);
+			}
 		}
 
 		if (segment == "|") { //Deletion request
@@ -298,9 +307,11 @@ void InGame::NetRecv()
 			ss >> pDamage;
 			ss >> pID;
 
-			players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID);
+			if (pID != players[0]->GetID()) {
+				players[0]->CreateNetBullet(pX, pY, pXVel, pYVel, pDamage, pID);
+			}
 		}
-		if (segment == "-") {
+		if (segment == "-") { //Death Packet
 			int pID;
 			ss >> pID;
 
@@ -310,13 +321,26 @@ void InGame::NetRecv()
 				}
 			}
 		}
-		if (segment == "+") {
+		if (segment == "+") { //Respawn Packet
 			int pID;
 			ss >> pID;
 
 			for (int i = 0; i < players.size(); i++) {
 				if (players[i]->GetID() == pID) {
 					players[i]->SetDeath(false);
+				}
+			}
+		}
+		if (segment == "=") {
+			int pID;
+
+			ss >> pID;
+
+			std::cout << "My score has gone up! PlayerID " << pID << "\n";
+
+			for (int i = 0; i < players.size(); i++) {
+				if (players[i]->GetID() == pID) {
+					players[i]->GiveFrag();
 				}
 			}
 		}

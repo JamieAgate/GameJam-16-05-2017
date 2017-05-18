@@ -17,7 +17,7 @@ public:
 	~Player();
 
 	void Update(std::vector<Player*> _otherPlayers);
-	void Draw();
+	void Draw(std::vector<Player*> _otherPlayers);
 
 	int GetPlayerX() { return playerSprite->GetX(); }
 	int GetPlayerY() { return playerSprite->GetY(); }
@@ -51,6 +51,13 @@ public:
 	bool CheckRespawn();
 
 	void CreateNetBullet(float _x, float _y, float _xVel, float _yVel, int _damage, int _playerID);
+
+	int GetKillerID() { int killer = killerID; killerID = -1; return killer; }
+
+	void GiveCameraPos(int _x, int _y) { cameraPosX = _x; cameraPosY = _y; }
+	int GetFrags() { return frags; }
+
+	void GiveFrag() { frags++; }
 
 private:
 	SDL_Renderer* renderer;
@@ -105,6 +112,8 @@ private:
 	int playerID;
 	bool isRemote;
 
+	int killerID;
+
 	//Firing variables
 	int shotTimer = 0;
 	int shotDelay = 20;
@@ -117,4 +126,9 @@ private:
 	//Player Properties
 	int health;
 	bool death;
+	int frags;
+
+	//HUD PARAMS
+	int cameraPosX;
+	int cameraPosY;
 };
