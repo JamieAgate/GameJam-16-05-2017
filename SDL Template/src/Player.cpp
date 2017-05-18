@@ -16,6 +16,7 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	death = false;
 	timer = 0;
 	speed = 10;
+	bulletVelocity = 5;
 
 	bulletSprite = new AnimSprite(renderer, "resources\\Projectile\\SmallBullet.png", 0, 0, 10, 10);
 	deathScreen = new Sprite(renderer, "resources\\DeathScreen\\DeathScreen.png", 0, 0, 1280, 720);
@@ -43,7 +44,15 @@ Player::~Player()
 
 bool Player::InitPlayer()
 {
-	playerSprite = new AnimSprite(renderer, "resources\\Player\\Player.png", 640, 360, 80, 80);
+	//PICK A RANDOM SPRITE
+	char* skins[4];
+
+	skins[0] = "resources\\player\\Flora.png";
+	skins[1] = "resources\\player\\Bunny.png";
+	skins[2] = "resources\\player\\PumpkinDude.png";
+	skins[3] = "resources\\player\\Santa.png";
+
+	playerSprite = new AnimSprite(renderer, skins[rand() % 4], 640, 360, 76, 46);
 
 	if (playerSprite == NULL)
 	{
@@ -67,6 +76,7 @@ void Player::Update(std::vector<Player*> _otherPlayers)
 			UpdateXMovement();
 			UpdateYMovement();
 			UpdateRotation();
+			UpdateAnim();
 			CheckDeath();
 		}
 		else
@@ -86,6 +96,8 @@ void Player::DeathUpdate()
 		cursorX = 540 - abs((sin(timer * 0.04) * 15));
 		if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT) || input->IsKeyDown(SDL_SCANCODE_RETURN))
 		{
+			bulletVelocity = 5;
+			speed = 10;
 			respawn = true;
 		}
 	}
@@ -117,7 +129,7 @@ void Player::UpdateBullets(std::vector<Player*> _otherPlayers)
 		canShoot = false;
 		requestingBullet = true;
 
-		glm::vec2 vel(sin((angle * M_PI / 180)) * -5, cos((angle * M_PI / 180)) * -5);
+		glm::vec2 vel(sin((angle * M_PI / 180)) * -bulletVelocity, cos((angle * M_PI / 180)) * -bulletVelocity);
 		int startX = playerSprite->GetX() + (playerSprite->GetW() / 2);
 		int startY = playerSprite->GetY() + (playerSprite->GetH() / 2);
 
@@ -389,6 +401,8 @@ void Player::NetworkUpdate(int _x, int _y, float _angle)
 	playerSprite->SetX(_x);
 	playerSprite->SetY(_y);
 	angle = _angle;
+
+	UpdateAnim();
 }
 
 std::string Player::CreateProjectilePacket()
@@ -422,4 +436,13 @@ bool Player::CheckRespawn()
 	}
 
 	return false;
+}
+
+void Player::UpdateAnim()
+{
+	frameTimer++;
+
+	if (frameTimer % frameDelay == 0) frameTick++;
+
+	playerSprite->SetFrames(frameTick % 8, 0);
 }
