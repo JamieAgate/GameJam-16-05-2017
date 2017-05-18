@@ -24,8 +24,8 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	players[0]->SetMove(spawnPoint.x, spawnPoint.y);
 
 	PowerUpSpawnTimer = 0;
-	SpeedPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerUp.png", -80, -80, 40, 40);
-	AttackPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerUp2.png", -80, -80, 40, 40);
+	SpeedPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerupSPEED.png", -80, -80, 33, 27);
+	AttackPower = new AnimSprite(renderer, "resources\\PowerUps\\PowerupDAMAGE.png", -80, -80, 33, 27);
 	RespawnPowerUps();
 
 	networkTimer = 0;
@@ -57,6 +57,7 @@ InGame::~InGame()
 	delete map;
 	delete SpeedPower;
 	delete AttackPower;
+	delete powerUp;
 	SDL_DestroyTexture(cameraRenderBuffer);
 }
 
@@ -124,7 +125,7 @@ void InGame::UpdatePowerUps()
 		}
 	}
 	PowerUpsSpawned.erase(std::remove(PowerUpsSpawned.begin(), PowerUpsSpawned.end(), nullptr), PowerUpsSpawned.end());
-	if (PowerUpSpawnTimer == 300)
+	if (PowerUpSpawnTimer == 600)
 	{
 		RespawnPowerUps();
 		PowerUpSpawnTimer = 0;
@@ -136,23 +137,39 @@ void InGame::RespawnPowerUps()
 {
 	for (int i = 0; i < powerUpSpawnPoints.size(); i++)
 	{
-		int PowerUpType = rand() % 2;
+		int PowerUpType = rand() % 4;
 		switch (PowerUpType)
 		{
 		case 0:
 		{
-			powerUp = SpeedPower;
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\PowerupSPEED.png", -80, -80, 33, 27);
 			break;
 		}
 		case 1:
 		{
-			powerUp = AttackPower;
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\PowerupDamage.png", -80, -80, 33, 27);
+			break;
+		}
+		case 2:
+		{
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\Powerupattkspeed.png", -80, -80, 33, 27);
+			break;
+		}
+		case 3:
+		{
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\Poweruphealth.png", -80, -80, 33, 27);
 			break;
 		}
 		}
+		std::cout << powerUpSpawnPoints[i].x << " , " << powerUpSpawnPoints[i].y << "\n";
 		PowerUpsSpawned.push_back(new PowerUp(powerUp, PowerUpType, powerUpSpawnPoints[i]));
 	}
-	powerUpSpawnPoints.clear();
+	std::cout << "before clear: " << powerUpSpawnPoints.size() << "\n";
+	if (powerUpSpawnPoints.size() > 0)
+	{
+		powerUpSpawnPoints.clear();
+	}
+	std::cout << "after clear: " << powerUpSpawnPoints.size() << "\n";
 }
 
 void InGame::UpdateCamera()
@@ -177,8 +194,6 @@ void InGame::UpdateCamera()
 	}
 
 	players[0]->GiveCameraPos(camera.x, camera.y);
-
-	//std::cout << camera.x << " , " << camera.y << "\n";
 }
 
 void InGame::LoadCollisionMap(char* _filePath, int _w, int _h)
