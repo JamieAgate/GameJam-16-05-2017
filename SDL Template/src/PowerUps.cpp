@@ -6,7 +6,6 @@ PowerUp::PowerUp(AnimSprite* _PowerUp, int _name, glm::vec2 spawn)
 	powerUpID = _name;
 	sprite->SetX(spawn.x);
 	sprite->SetY(spawn.y);
-	hitbox = { (int)spawn.x, (int)spawn.y,60,60 };
 }
 
 PowerUp::~PowerUp()
