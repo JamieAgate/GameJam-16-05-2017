@@ -82,6 +82,7 @@ private:
 	bool InitPlayer();
 	void CheckDeath();
 	void DeathUpdate();
+	void UpdateAnim();
 	int timer;
 	int cursorX;
 	bool drawCursor;
@@ -116,19 +117,25 @@ private:
 
 	//Firing variables
 	int shotTimer = 0;
-	int shotDelay = 20;
+	int shotDelay = 10;
 	bool canShoot = true;
 	bool requestingBullet = false;
 
 	//Projectile Properties
-	int damage = 5;
+	int damage = 7;
 
 	//Player Properties
 	int health;
 	bool death;
 	int frags;
+	float bulletVelocity;
 
 	//HUD PARAMS
 	int cameraPosX;
 	int cameraPosY;
+
+	//Animatin Parameters
+	int frameTimer = 0;
+	int frameTick = 0;
+	int frameDelay = 5;
 };
