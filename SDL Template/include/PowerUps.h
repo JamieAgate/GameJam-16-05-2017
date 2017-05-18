@@ -13,9 +13,11 @@ public:
 	glm::vec2 GetUsedSpawnPoint() { return glm::vec2(sprite->GetX(), sprite->GetY()); }
 	SDL_Rect GetHitbox() { return sprite->GetRect(); }
 
+	int GetID() { return powerUpID; }
+
 	void Draw();
 private:
 	int duration;
-	char powerUpID;
+	int powerUpID;
 	AnimSprite*	sprite;
 };

@@ -63,6 +63,8 @@ public:
 
 	void SetSkin(int _newSkin) { playerSkin = _newSkin; }
 
+	void GivePowerup(int _id);
+
 private:
 	SDL_Renderer* renderer;
 	InputManager* input;
@@ -130,7 +132,7 @@ private:
 	bool requestingBullet = false;
 
 	//Projectile Properties
-	int damage = 7;
+	int damage = 5;
 
 	//Player Properties
 	int health;

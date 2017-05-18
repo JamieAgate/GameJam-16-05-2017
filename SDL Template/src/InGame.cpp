@@ -119,6 +119,10 @@ void InGame::UpdatePowerUps()
 		PowerUpsSpawned[i]->Update();
 		if (SDL_HasIntersection(&PowerUpsSpawned[i]->GetHitbox(), &players[0]->GetRect()))
 		{
+			// 0 = speed, 1 = damage, 2 = attack speed, 3 = health
+
+			players[0]->GivePowerup(PowerUpsSpawned[i]->GetID());
+
 			powerUpSpawnPoints.push_back(PowerUpsSpawned[i]->GetUsedSpawnPoint());
 			delete PowerUpsSpawned.at(i);
 			PowerUpsSpawned[i] = nullptr;
@@ -233,7 +237,7 @@ void InGame::Draw()
 
 	for (int i = 0; i < PowerUpsSpawned.size(); i++)
 	{
-		//PowerUpsSpawned[i]->Draw();
+		PowerUpsSpawned[i]->Draw();
 	}
 	SDL_SetRenderTarget(renderer, NULL);
 	SDL_RenderCopy(renderer, cameraRenderBuffer, &camera, &screen);
