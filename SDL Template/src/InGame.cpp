@@ -141,7 +141,7 @@ void InGame::RespawnPowerUps()
 {
 	for (int i = 0; i < powerUpSpawnPoints.size(); i++)
 	{
-		int PowerUpType = rand() % 4;
+		int PowerUpType = rand() % 5;
 		switch (PowerUpType)
 		{
 		case 0:
@@ -162,6 +162,11 @@ void InGame::RespawnPowerUps()
 		case 3:
 		{
 			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\Poweruphealth.png", -80, -80, 33, 27);
+			break;
+		}
+		case 4:
+		{
+			powerUp = new AnimSprite(renderer, "resources\\PowerUps\\PowerupATTVEL.png", -80, -80, 33, 27);
 			break;
 		}
 		}

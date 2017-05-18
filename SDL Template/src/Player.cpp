@@ -464,12 +464,12 @@ void Player::GivePowerup(int _id)
 {
 	switch (_id) {
 		case 0: //Speed
-			speed += 3;
-			if (speed > 20) speed = 20;
+			speed += 1;
+			if (speed > 14) speed = 14;
 			break;
 		case 1:
-			damage += 4;
-			if (damage > 25) damage = 25;
+			damage += 3;
+			if (damage > 15) damage = 15;
 			break;
 		case 2:
 			shotDelay -= 2;
@@ -478,6 +478,10 @@ void Player::GivePowerup(int _id)
 		case 3:
 			health += 25;
 			if (health > 200) health = 200;
+			break;
+		case 4:
+			bulletVelocity += 2;
+			if (bulletVelocity > 20) bulletVelocity = 20;
 			break;
 	}
 }
