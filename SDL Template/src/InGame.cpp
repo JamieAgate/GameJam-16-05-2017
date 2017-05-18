@@ -9,7 +9,7 @@ InGame::InGame(SDL_Renderer* _renderer, GameStateManager* _manager, InputManager
 	net = NULL;
 
 	LoadCollisionMap("resources\\map\\complex.png", 2560, 1440);
-	map = new Sprite(_renderer, "resources\\map\\complex.png",0,0, 2560, 1440);
+	map = new Sprite(_renderer, "resources\\map\\MapOverlay.png",0,0, 2560, 1440);
 	cameraRenderBuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 2560, 1440);
 
 	net = new TCPConnection();
