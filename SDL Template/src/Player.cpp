@@ -16,7 +16,7 @@ Player::Player(InputManager* _input, SDL_Renderer* _renderer, int _playerID, boo
 	death = false;
 	timer = 0;
 	speed = 10;
-	bulletVelocity = 5;
+	bulletVelocity = 10;
 
 	deathScreen = new Sprite(renderer, "resources\\DeathScreen\\DeathScreen.png", 0, 0, 1280, 720);
 	cursorSprite = new Sprite(renderer, "resources\\MainMenu\\cursor.png", 540, 590, 50, 100);
@@ -101,7 +101,7 @@ void Player::DeathUpdate()
 		cursorX = 540 - abs((sin(timer * 0.04) * 15));
 		if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT) || input->IsKeyDown(SDL_SCANCODE_RETURN))
 		{
-			bulletVelocity = 5;
+			bulletVelocity = 10;
 			speed = 10;
 			respawn = true;
 		}
